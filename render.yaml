@@ -1,38 +1,9 @@
 services:
   - type: web
     name: selleaise
-    runtime: node
+    env: docker
     plan: free
     region: oregon
-    buildCommand: |
-      curl -sS https://getcomposer.org/installer | php
-      mv composer.phar /usr/local/bin/composer
-      apt-get update && apt-get install -y php php-cli php-mbstring unzip
-      composer install
-      npm install
-      npm run build
-      php artisan config:cache
-      php artisan route:cache
-      php artisan storage:link
-    startCommand: php artisan serve --host=0.0.0.0 --port=10000
+    dockerfilePath: Dockerfile
     envVars:
-      - key: APP_ENV
-        value: production
-      - key: APP_DEBUG
-        value: false
-      - key: APP_KEY
-        value: base64:EBAl1CH42Ag6DqP58WYfMBrjbJRalxKgW/f4Z5sXpfA=
-      - key: APP_URL
-        value: https://selleaise.onrender.com
-      - key: DB_CONNECTION
-        value: mysql
-      - key: DB_HOST
-        value: lim112.truehost.cloud
-      - key: DB_PORT
-        value: 3306
-      - key: DB_DATABASE
-        value: ewkkgloj_sellease
-      - key: DB_USERNAME
-        value: ewkkgloj_selleuser
-      - key: DB_PASSWORD
-        value: zallaH2025!
+      # ... same as before ...
