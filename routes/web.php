@@ -113,4 +113,4 @@ Route::prefix('admin')->group(function() {
 // Auth::routes();
 
 // You can keep this if you need a separate home route for non-admin users
-Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('user.home');
