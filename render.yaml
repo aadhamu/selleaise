@@ -1,11 +1,12 @@
 services:
   - type: web
     name: selleaise
-    env: php
+    runtime: node
     plan: free
     region: oregon
     buildCommand: |
-      composer install
+      curl -sS https://getcomposer.org/installer | php
+      php composer.phar install
       npm install
       npm run build
       php artisan config:cache
