@@ -1,0 +1,12 @@
+/vendor
+/node_modules
+/public/storage
+.env
+.env.*
+*.log
+.idea
+*.sqlite
+.DS_Store
+/public/hot
+/public/mix-manifest.json
+/public/build
