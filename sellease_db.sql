@@ -178,7 +178,7 @@ CREATE TABLE `order_items` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `billing_address` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`billing_address`)),
   `order_id` bigint(20) UNSIGNED NOT NULL,
-  `order_number` varchar(255) NOT NULL DEFAULT concat('ORD-',convert(uuid() using utf8mb4)),
+`order_number` varchar(255) NOT NULL,
   `product_id` bigint(20) UNSIGNED NOT NULL,
   `quantity` int(11) NOT NULL,
   `price` decimal(10,2) NOT NULL,
