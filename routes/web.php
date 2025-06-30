@@ -1,7 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\{
     CartController,
     AccountController,
@@ -16,51 +17,55 @@ use App\Http\Controllers\{
     ContactMessageController
 };
 
-// ✅ FIX: Remove the duplicate '/' route
+// ✅ Frontend Routes
 Route::get('/', [FrontendController::class, 'welcome'])->name('home');
-
-// Frontend Routes
 Route::get('/shop', [FrontendController::class, 'shop'])->name('shop');
 Route::get('/contact', [FrontendController::class, 'contact'])->name('contact');
 Route::post('/contact', [ContactMessageController::class, 'store'])->name('contact.store');
+Route::get('/shop/{product:slug}', [ProductController::class, 'shopDetails'])->name('shop-details');
 
-// Cart Routes
+// ✅ Cart Routes
 Route::get('/cart', [CartController::class, 'index'])->name('cart');
+Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
 Route::patch('/cart/{item}', [CartController::class, 'update'])->name('cart.update');
 Route::delete('/cart/{item}', [CartController::class, 'remove'])->name('cart.remove');
-Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
 
-// Checkout Routes
+// ✅ Checkout Routes
 Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
 Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
 Route::get('/thank-you/{order}', [CheckoutController::class, 'thankYou'])->name('checkout.success');
 
-// Product Routes
-Route::get('/shop/{product:slug}', [ProductController::class, 'shopDetails'])->name('shop-details');
-
-// Order Payment Status
+// ✅ Order Payment Status
 Route::put('/admin/orders/{order}/payment-status', [OrderController::class, 'updatePaymentStatus'])->name('admin.orders.update-payment-status');
 
-// File download route
+// ✅ Secure File Download
 Route::get('/secure-receipts/{filename}', function ($filename) {
     $path = storage_path('app/public/receipts/' . $filename);
     if (!file_exists($path)) abort(404, 'File not found: ' . $path);
     return Response::file($path);
 });
 
-// Auth Routes
+// ✅ Auth Routes
 Auth::routes();
+Route::get('/home', [HomeController::class, 'index'])->name('user.home');
 
-// Admin Routes
+// ✅ Admin Routes
 Route::prefix('admin')->group(function () {
+    // Public Admin Login
     Route::get('/login', [AccountController::class, 'showAdminLoginForm'])->name('admin.login');
     Route::post('/login', [AccountController::class, 'adminLogin'])->name('admin.login.post');
 
+    // Protected Admin Routes
     Route::middleware(['auth', 'admin'])->name('admin.')->group(function () {
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
 
         // Products
-        Route::resource('products', ProductController::class)->parameters(['products' => 'product:slug']);
+        Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+        Route::get('/products/add', [ProductController::class, 'create'])->name('products.create');
+        Route::post('/products/add', [ProductController::class, 'store'])->name('products.add');
+        Route::get('/products/{product:slug}/edit', [ProductController::class, 'edit'])->name('products.edit');
+        Route::put('/products/{product:slug}', [ProductController::class, 'update'])->name('products.update');
+        Route::delete('/products/{product:slug}', [ProductController::class, 'destroy'])->name('products.destroy');
 
         // Categories
         Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
@@ -85,6 +90,3 @@ Route::prefix('admin')->group(function () {
         Route::post('/logout', [AccountController::class, 'adminLogout'])->name('logout');
     });
 });
-
-// Non-admin user home route
-Route::get('/home', [HomeController::class, 'index'])->name('user.home');
