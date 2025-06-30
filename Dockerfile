@@ -5,6 +5,7 @@ WORKDIR /var/www
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
+    build-essential \
     git \
     curl \
     zip \
@@ -14,7 +15,6 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libxml2-dev \
     libsqlite3-dev \
-    sqlite3 \
     nodejs \
     npm
 
@@ -32,12 +32,11 @@ COPY . .
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 RUN npm install && npm run build
 
-# Laravel permissions and cache
-RUN chmod -R 775 storage bootstrap/cache
-RUN php artisan config:cache
-RUN php artisan route:cache
-RUN php artisan storage:link || true
+# Laravel setup
+RUN php artisan config:cache && \
+    php artisan route:cache && \
+    php artisan storage:link || true
 
-# Expose port 8000 and run Laravel server
+# Expose port and start
 EXPOSE 8000
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
