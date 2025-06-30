@@ -1,92 +1,116 @@
 <?php
-
 use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
-use App\Http\Controllers\{
-    CartController,
-    AccountController,
-    CheckoutController,
-    FrontendController,
-    Admin\AdminController,
-    Admin\OrderController,
-    Admin\ProductController,
-    Admin\CategoryController,
-    Admin\ContactInfoController,
-    HomeController,
-    ContactMessageController
-};
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\AccountController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\FrontendController;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ContactInfoController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ContactMessageController;
+// use App\Http\Controllers\ContactMessageController;
 
-// ✅ Frontend Routes
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "web" middleware group. Make something great!
+|
+*/
+
+// Frontend Routes
 Route::get('/', [FrontendController::class, 'welcome'])->name('home');
 Route::get('/shop', [FrontendController::class, 'shop'])->name('shop');
+// Route::get('/shop/{id}', [FrontendController::class, 'shopDetails'])->name('shop-details');
 Route::get('/contact', [FrontendController::class, 'contact'])->name('contact');
 Route::post('/contact', [ContactMessageController::class, 'store'])->name('contact.store');
-Route::get('/shop/{product:slug}', [ProductController::class, 'shopDetails'])->name('shop-details');
 
-// ✅ Cart Routes
+// Cart Routes
 Route::get('/cart', [CartController::class, 'index'])->name('cart');
-Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
+// Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
 Route::patch('/cart/{item}', [CartController::class, 'update'])->name('cart.update');
 Route::delete('/cart/{item}', [CartController::class, 'remove'])->name('cart.remove');
 
-// ✅ Checkout Routes
+// Checkout Routes
 Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
 Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
 Route::get('/thank-you/{order}', [CheckoutController::class, 'thankYou'])->name('checkout.success');
+// Product routes
+Route::get('/shop/{product:slug}', [ProductController::class, 'shopDetails'])->name('shop-details');
+Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
 
-// ✅ Order Payment Status
+
+// In web.php
 Route::put('/admin/orders/{order}/payment-status', [OrderController::class, 'updatePaymentStatus'])->name('admin.orders.update-payment-status');
 
-// ✅ Secure File Download
+// Authentication Routes
+Auth::routes();
 Route::get('/secure-receipts/{filename}', function ($filename) {
-    $path = storage_path('app/public/receipts/' . $filename);
-    if (!file_exists($path)) abort(404, 'File not found: ' . $path);
+    $path = storage_path('app/public/receipts/' . $filename); // or 'app/receipts/' if that's your actual location
+
+    if (!file_exists($path)) {
+        abort(404, 'File not found: ' . $path);
+    }
+
     return Response::file($path);
 });
-
-// ✅ Auth Routes
-Auth::routes();
-Route::get('/home', [HomeController::class, 'index'])->name('user.home');
-
-// ✅ Admin Routes
-Route::prefix('admin')->group(function () {
-    // Public Admin Login
+// Admin Routes - Combined into a single group
+Route::prefix('admin')->group(function() {
+    // Login Routes (public)
     Route::get('/login', [AccountController::class, 'showAdminLoginForm'])->name('admin.login');
     Route::post('/login', [AccountController::class, 'adminLogin'])->name('admin.login.post');
 
-    // Protected Admin Routes
-    Route::middleware(['auth', 'admin'])->name('admin.')->group(function () {
+    // Protected Admin Routes (require auth and admin middleware)
+    Route::middleware(['auth', 'admin']) ->name('admin.')->group(function () {
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
-
-        // Products
-        Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-        Route::get('/products/add', [ProductController::class, 'create'])->name('products.create');
-        Route::post('/products/add', [ProductController::class, 'store'])->name('products.add');
+        
+       // Product Routes
+        Route::get('/products', [ProductController::class, 'index'])->name('products.index');  
+        Route::get('/products/add', [ProductController::class, 'create'])->name('products.create');        
+        Route::post('/products/add', [ProductController::class, 'store'])->name('products.add');  
         Route::get('/products/{product:slug}/edit', [ProductController::class, 'edit'])->name('products.edit');
         Route::put('/products/{product:slug}', [ProductController::class, 'update'])->name('products.update');
         Route::delete('/products/{product:slug}', [ProductController::class, 'destroy'])->name('products.destroy');
 
-        // Categories
-        Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
-        Route::get('/categories/add', [CategoryController::class, 'create'])->name('categories.create');
-        Route::post('/categories/add', [FrontendController::class, 'store'])->name('categories.add');
-        Route::get('/categories/{category}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
-        Route::put('/categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
+        
+        // Category Routes
+        Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');  
+        Route::get('/categories/add', [CategoryController::class, 'create'])->name('categories.create');        
+        Route::post('/categories/add', [FrontendController::class, 'store'])->name('categories.add');  
+        Route::get('/categories/{category}/edit', [CategoryController::class, 'edit'])->name('categories.edit');Route::put('/categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
         Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
-
-        // Contact Messages
-        Route::get('/contacts', [ContactMessageController::class, 'index'])->name('contact.index');
-
-        // Orders
+      
+        //Contacts rOUTE
+         Route::get('/contacts', [ContactMessageController::class, 'index'])->name('contact.index');  
+         
+        // Order Routes
         Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
         Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
         Route::put('/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.update-status');
 
-        // Contact Info
-        Route::resource('contact-info', ContactInfoController::class)->except(['create', 'store', 'destroy']);
 
-        // Logout
+
+
+
+        // Contact Info Routes
+        Route::resource('contact-info', ContactInfoController::class)
+            ->except(['create', 'store', 'destroy']);
+        
         Route::post('/logout', [AccountController::class, 'adminLogout'])->name('logout');
     });
 });
+
+// Remove this duplicate line as it's already called above
+// Auth::routes();
+
+// You can keep this if you need a separate home route for non-admin users
+Route::get('/home', [HomeController::class, 'index'])->name('home');

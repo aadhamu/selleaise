@@ -1,7 +1,0 @@
-services:
-  - type: web
-    name: selleaise-backend
-    env: docker
-    plan: free
-    branch: main
-    dockerfilePath: Dockerfile

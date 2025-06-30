@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->json('billing_address');
             $table->foreignId('order_id')->constrained()->onDelete('cascade');
-            $table->string('order_number')->unique()->default(DB::raw("CONCAT('ORD-', UUID())"));
+            $table->string('order_number')->unique()->default(DB::raw("CONCAT('ORD-', uuid_generate_v4())"));
             $table->foreignId('product_id')->constrained()->onDelete('cascade');
             $table->integer('quantity');
             $table->decimal('price', 10, 2);

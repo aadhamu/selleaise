@@ -21,14 +21,15 @@ class AdminController extends Controller
         $contactMessageCount = ContactMessage::count();
 
         $monthlySales = Order::select(
-            DB::raw('DATE_FORMAT(created_at, "%Y-%m") as month'),
-            DB::raw('SUM(total) as total')
-        )
-        ->where('status', 'completed') // ✅ Only completed sales
-        ->where('created_at', '>=', now()->subMonths(12))
-        ->groupBy('month')
-        ->orderBy('month')
-        ->get();
+    DB::raw("TO_CHAR(created_at, 'YYYY-MM') as month"),
+    DB::raw('SUM(total) as total')
+)
+->where('status', 'completed')
+->where('created_at', '>=', now()->subMonths(12))
+->groupBy('month')
+->orderBy('month')
+->get();
+
 
         $chartLabels = $monthlySales->pluck('month')->toArray();
         $chartData = $monthlySales->pluck('total')->toArray();
