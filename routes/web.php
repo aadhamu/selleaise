@@ -26,7 +26,9 @@ use App\Http\Controllers\ContactMessageController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
+Route::get('/', function () {
+    return view('welcome'); // Make sure this view exists
+});
 // Frontend Routes
 Route::get('/', [FrontendController::class, 'welcome'])->name('home');
 Route::get('/shop', [FrontendController::class, 'shop'])->name('shop');
