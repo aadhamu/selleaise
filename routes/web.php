@@ -27,9 +27,14 @@ use App\Http\Controllers\ContactMessageController;
 |
 */
 Route::get('/debug-log', function () {
-    return response()->file(storage_path('logs/laravel.log'));
-});
+    $logPath = storage_path('logs/laravel.log');
+    
+    if (!File::exists($logPath)) {
+        return 'Log file does not exist.';
+    }
 
+    return nl2br(e(File::get($logPath)));
+});
 // Frontend Routes
 Route::get('/', [FrontendController::class, 'welcome'])->name('home');
 Route::get('/shop', [FrontendController::class, 'shop'])->name('shop');
