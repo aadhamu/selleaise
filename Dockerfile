@@ -24,17 +24,16 @@ RUN composer install --no-dev --optimize-autoloader --no-interaction
 # Fix Apache root to point to public folder
 RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
 
-# Laravel cache build-time only (safe)
-RUN php artisan config:clear \
-    && php artisan config:cache \
-    && php artisan route:cache \
-    && php artisan view:cache
-
 # Expose port
 EXPOSE 80
 
-# ✅ Final CMD: Fix storage folders **at runtime**, then launch server
+# ✅ Runtime CMD: Set permissions, cache config, run migrations, then start server
 CMD mkdir -p storage/framework/{sessions,views,cache} bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache \
     && chown -R www-data:www-data storage bootstrap/cache \
+    && php artisan config:clear \
+    && php artisan config:cache \
+    && php artisan route:cache \
+    && php artisan view:cache \
+    && php artisan migrate --force \
     && apache2-foreground
