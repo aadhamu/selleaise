@@ -27,8 +27,12 @@ RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available
 # Expose port
 EXPOSE 80
 
-# ✅ Runtime CMD: Set permissions, cache config, run migrations, then start server
-CMD mkdir -p storage/framework/{sessions,views,cache} bootstrap/cache \
+# ✅ Final CMD: Fix storage folders & run runtime commands
+CMD mkdir -p \
+      storage/framework/sessions \
+      storage/framework/views \
+      storage/framework/cache \
+      bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache \
     && chown -R www-data:www-data storage bootstrap/cache \
     && php artisan config:clear \
