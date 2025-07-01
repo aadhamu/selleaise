@@ -3,25 +3,24 @@ services:
     name: sellease
     env: docker
     plan: free
-    region: oregon
-    autoDeploy: true
+    buildCommand: ""
+    startCommand: "php artisan migrate --force && apache2-foreground"
     envVars:
       - key: APP_ENV
         value: production
-      - key: APP_DEBUG
-        value: true
       - key: APP_KEY
-        value: base64:ZJt9Ej4C/72Y+F8cPCtT5O6/z6C3YvHfEk05Q2x0/z8=
+        value: base64:Hqjbc2q91dzBaQx5t/22ssrzwDSkKNiLchSUDiG3SC8=
+      - key: APP_DEBUG
+        value: "false"
       - key: APP_URL
         value: https://sellease.onrender.com
 
-      # PostgreSQL (Internal Render Hostname)
       - key: DB_CONNECTION
         value: pgsql
       - key: DB_HOST
         value: dpg-d1hi6a0dl3ps738mtigg-a
       - key: DB_PORT
-        value: 5432
+        value: "5432"
       - key: DB_DATABASE
         value: sellease_user
       - key: DB_USERNAME
@@ -29,8 +28,11 @@ services:
       - key: DB_PASSWORD
         value: hcwQhHDMLZowzJgqMYgeTHv6utdUNvdP
 
-      # Paystack Keys
-      - key: PAYSTACK_PUBLIC_KEY
-        value: pk_test_6299f4ba1dc71a65cdb9bdfa4eb7c2c67bfcd939
-      - key: PAYSTACK_SECRET_KEY
-        value: sk_test_0bd2149ffbc054b590a246dd299dca0f4b1c68fd
+      - key: LOG_CHANNEL
+        value: stderr
+      - key: CACHE_DRIVER
+        value: file
+      - key: SESSION_DRIVER
+        value: file
+      - key: QUEUE_CONNECTION
+        value: sync
