@@ -13,37 +13,28 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
 # Enable Apache rewrite module
 RUN a2enmod rewrite
 
-# Set working directory
 WORKDIR /var/www/html
 
 # Copy Composer from official image
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copy package.json and package-lock.json first (cache npm install)
-COPY package*.json ./
+# Copy ALL project files first (including artisan)
+COPY . .
+
+# Install PHP dependencies (needs artisan present)
+RUN composer install --no-dev --optimize-autoloader --no-interaction
 
 # Install Node dependencies
 RUN npm install
 
-# Copy composer.json and composer.lock for caching composer install
-COPY composer.json composer.lock ./
-
-# Install PHP dependencies (without dev)
-RUN composer install --no-dev --optimize-autoloader --no-interaction
-
-# Copy the rest of the project files
-COPY . .
-
-# Run build for Vite assets
+# Build frontend assets
 RUN npm run build
 
 # Fix Apache root to point to public folder
 RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
 
-# Expose port 80
 EXPOSE 80
 
-# Runtime commands: fix permissions, cache config, migrate, launch Apache
 CMD mkdir -p \
       storage/framework/sessions \
       storage/framework/views \
