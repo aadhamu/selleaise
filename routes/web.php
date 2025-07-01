@@ -13,6 +13,8 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ContactInfoController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ContactMessageController;
+use Illuminate\Support\Facades\File;
+
 // use App\Http\Controllers\ContactMessageController;
 
 
@@ -26,15 +28,7 @@ use App\Http\Controllers\ContactMessageController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::get('/debug-log', function () {
-    $logPath = storage_path('logs/laravel.log');
-    
-    if (!File::exists($logPath)) {
-        return 'Log file does not exist.';
-    }
-
-    return nl2br(e(File::get($logPath)));
-});
+ 
 // Frontend Routes
 Route::get('/', [FrontendController::class, 'welcome'])->name('home');
 Route::get('/shop', [FrontendController::class, 'shop'])->name('shop');
@@ -122,3 +116,16 @@ Route::prefix('admin')->group(function() {
 
 // You can keep this if you need a separate home route for non-admin users
 Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+
+
+
+Route::get('/debug-log', function () {
+    $logPath = storage_path('logs/laravel.log');
+
+    if (!File::exists($logPath)) {
+        return 'Log file does not exist.';
+    }
+
+    return nl2br(e(File::get($logPath)));
+});
