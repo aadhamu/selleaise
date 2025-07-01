@@ -1,37 +1,35 @@
+# Base image
 FROM php:8.2-apache
 
-# Enable required extensions
+# Install system dependencies & PHP extensions
 RUN apt-get update && apt-get install -y \
-    git \
-    unzip \
-    curl \
-    libpq-dev \
-    libzip-dev \
-    zip \
-    && docker-php-ext-install pdo pdo_pgsql zip
+    git curl zip unzip libpq-dev libzip-dev libonig-dev libxml2-dev \
+    && docker-php-ext-install pdo pdo_pgsql zip mbstring xml
+
+# Enable Apache mod_rewrite
+RUN a2enmod rewrite
 
 # Set working directory
 WORKDIR /var/www/html
 
-# Copy source code
+# Copy app files
 COPY . .
 
-# Set correct Apache doc root
-RUN sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/public|' /etc/apache2/sites-available/000-default.conf
+# Set correct permissions
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 755 /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Install Composer
+# Install Composer (latest version)
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Set permissions
-RUN chmod -R 755 storage bootstrap/cache
+# Install Laravel dependencies
+RUN composer install --optimize-autoloader --no-dev
 
-# Install dependencies
-RUN composer install --no-dev --optimize-autoloader
-
-# Run Laravel setup tasks (cache config, migrate, etc)
+# Ensure Laravel .env is loaded and config is cached
+RUN cp .env .env.production || true
 RUN php artisan config:clear && \
     php artisan config:cache && \
     php artisan migrate --force || true
 
-# Start Apache
-CMD ["apache2-foreground"]
+# Expose port 80
+EXPOSE 80
