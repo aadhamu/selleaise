@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y \
     git curl zip unzip libpq-dev libonig-dev gnupg \
     && docker-php-ext-install pdo pdo_pgsql
 
-# Install Node.js (for example, Node 18.x)
+# Install Node.js 18.x
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
     && apt-get install -y nodejs
 
@@ -19,22 +19,28 @@ WORKDIR /var/www/html
 # Copy Composer from official image
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copy project files into the container
+# Copy only package.json and package-lock.json first (for caching npm install)
+COPY package*.json ./
+
+# Install Node dependencies
+RUN npm install
+
+# Copy the rest of the project files
 COPY . .
 
-# Install PHP dependencies
-RUN composer install --no-dev --optimize-autoloader --no-interaction
+# Run build for assets (generates public/build/manifest.json etc)
+RUN npm run build
 
-# Install Node dependencies and build assets
-RUN npm install && npm run build
+# Install PHP dependencies with Composer
+RUN composer install --no-dev --optimize-autoloader --no-interaction
 
 # Fix Apache root to point to public folder
 RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
 
-# Expose port
+# Expose port 80
 EXPOSE 80
 
-# Runtime commands: fix permissions, cache config, migrate, then launch Apache
+# Runtime commands: fix permissions, cache config, migrate, launch Apache
 CMD mkdir -p \
       storage/framework/sessions \
       storage/framework/views \
