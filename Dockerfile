@@ -26,7 +26,7 @@ RUN chown -R www-data:www-data /var/www/html \
 # Install dependencies
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
-# Laravel cache (no migrate)
+# Laravel cache (skip migrate at build)
 RUN php artisan config:clear \
     && php artisan config:cache \
     && php artisan route:cache \
@@ -38,5 +38,6 @@ RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available
 # Expose port
 EXPOSE 80
 
-# Run migrate only at container start
+# Run migrate on container start (when env vars are available)
 CMD php artisan migrate --force && apache2-foreground
+
