@@ -1,24 +1,12 @@
-# Node & vendor (you run composer/npm install inside container)
+.env
+.env.*
 node_modules
 vendor
-
-# Git & IDE/editor
 .git
 .gitignore
 .idea
 .vscode
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Laravel cache & logs
 storage/logs/*
 storage/framework/cache/*
 storage/framework/sessions/*
 storage/framework/views/*
-
-# Ignore env files — Render uses render.yaml
-.env
-.env.*
-.env.example
