@@ -1,5 +1,6 @@
 # Node & vendor (you run composer/npm install inside container)
 node_modules
+vendor
 
 # Git & IDE/editor
 .git
@@ -11,11 +12,13 @@ node_modules
 .DS_Store
 Thumbs.db
 
-# Cache & logs (these will be auto-created)
+# Laravel cache & logs
 storage/logs/*
 storage/framework/cache/*
 storage/framework/sessions/*
 storage/framework/views/*
 
-# Only ignore .env examples — not the real one
+# Ignore env files — Render uses render.yaml
+.env
+.env.*
 .env.example

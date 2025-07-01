@@ -1,26 +1,19 @@
 services:
   - type: web
-    name: selleaise
+    name: sellease
     env: docker
     plan: free
+    region: oregon
     autoDeploy: true
     envVars:
-      - key: APP_NAME
-        value: Sellease
       - key: APP_ENV
         value: production
-      - key: APP_KEY
-        value: base64:ZJt9Ej4C/72Y+F8cPCtT5O6/z6C3YvHfEk05Q2x0/z8=
       - key: APP_DEBUG
         value: true
+      - key: APP_KEY
+        value: base64:ZJt9Ej4C/72Y+F8cPCtT5O6/z6C3YvHfEk05Q2x0/z8=
       - key: APP_URL
         value: https://sellease.onrender.com
-
-      - key: LOG_CHANNEL
-        value: stack
-      - key: LOG_LEVEL
-        value: debug
-
       - key: DB_CONNECTION
         value: pgsql
       - key: DB_HOST
@@ -33,7 +26,6 @@ services:
         value: sellease
       - key: DB_PASSWORD
         value: hcwQhHDMLZowzJgqMYgeTHv6utdUNvdP
-
       - key: PAYSTACK_PUBLIC_KEY
         value: pk_test_6299f4ba1dc71a65cdb9bdfa4eb7c2c67bfcd939
       - key: PAYSTACK_SECRET_KEY
