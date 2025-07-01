@@ -118,13 +118,11 @@ Route::prefix('admin')->group(function() {
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 
-
-
 Route::get('/debug-log', function () {
     $logPath = storage_path('logs/laravel.log');
 
     if (!File::exists($logPath)) {
-        return 'Log file does not exist.';
+        return 'No log file found.';
     }
 
     return nl2br(e(File::get($logPath)));
