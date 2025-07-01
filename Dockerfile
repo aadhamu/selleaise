@@ -26,12 +26,11 @@ RUN chown -R www-data:www-data /var/www/html \
 # Install dependencies
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
-# Laravel cache and migrate
+# Laravel cache (no migrate)
 RUN php artisan config:clear \
     && php artisan config:cache \
     && php artisan route:cache \
-    && php artisan view:cache \
-    && php artisan migrate --force
+    && php artisan view:cache
 
 # Fix Apache root
 RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
@@ -39,5 +38,5 @@ RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available
 # Expose port
 EXPOSE 80
 
-# Start Apache
-CMD ["apache2-foreground"]
+# Run migrate only at container start
+CMD php artisan migrate --force && apache2-foreground
