@@ -26,14 +26,12 @@ RUN chown -R www-data:www-data /var/www/html \
 # Install dependencies
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
-# Clear and rebuild Laravel caches
+# Clear and skip Laravel caches
 RUN php artisan config:clear && \
     php artisan route:clear && \
     php artisan view:clear && \
-    php artisan cache:clear && \
-    php artisan config:cache && \
-    php artisan route:cache && \
-    php artisan view:cache || true
+    php artisan cache:clear
+
 
 # Point Apache to the public directory
 RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
