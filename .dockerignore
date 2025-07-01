@@ -1,3 +1,21 @@
+# Node & vendor (you run composer/npm install inside container)
 node_modules
-vendor
-.env
+
+# Git & IDE/editor
+.git
+.gitignore
+.idea
+.vscode
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Cache & logs (these will be auto-created)
+storage/logs/*
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+
+# Only ignore .env examples — not the real one
+.env.example
