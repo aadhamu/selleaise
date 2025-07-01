@@ -19,20 +19,23 @@ WORKDIR /var/www/html
 # Copy Composer from official image
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copy only package.json and package-lock.json first (for caching npm install)
+# Copy package.json and package-lock.json first (cache npm install)
 COPY package*.json ./
 
 # Install Node dependencies
 RUN npm install
 
+# Copy composer.json and composer.lock for caching composer install
+COPY composer.json composer.lock ./
+
+# Install PHP dependencies (without dev)
+RUN composer install --no-dev --optimize-autoloader --no-interaction
+
 # Copy the rest of the project files
 COPY . .
 
-# Run build for assets (generates public/build/manifest.json etc)
+# Run build for Vite assets
 RUN npm run build
-
-# Install PHP dependencies with Composer
-RUN composer install --no-dev --optimize-autoloader --no-interaction
 
 # Fix Apache root to point to public folder
 RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
