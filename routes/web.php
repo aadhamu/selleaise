@@ -26,6 +26,9 @@ use App\Http\Controllers\ContactMessageController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::get('/debug-log', function () {
+    return response()->file(storage_path('logs/laravel.log'));
+});
 
 // Frontend Routes
 Route::get('/', [FrontendController::class, 'welcome'])->name('home');
