@@ -1,37 +1,38 @@
 # Use official PHP image with Apache
 FROM php:8.2-apache
 
-# Install system dependencies for PostgreSQL and Laravel
+# Install required packages for Laravel and PostgreSQL
 RUN apt-get update && apt-get install -y \
     git curl zip unzip libpq-dev libonig-dev \
     && docker-php-ext-install pdo pdo_pgsql
 
-# Enable Apache mod_rewrite and set correct document root to /public
-RUN a2enmod rewrite && \
-    sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
+# Enable Apache rewrite module
+RUN a2enmod rewrite
 
-# Set working directory to Laravel root
+# Set working directory
 WORKDIR /var/www/html
 
-# Copy Composer from official Composer image
+# Copy Composer from official image
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copy project files into the container
+# Copy application files
 COPY . .
 
-# Set correct permissions for Laravel
+# Set permissions
 RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html/storage \
-    && chmod -R 755 /var/www/html/bootstrap/cache
+    && chmod -R 775 storage bootstrap/cache
 
-# Install Laravel PHP dependencies
+# Install PHP dependencies
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
-# Clear and cache configuration (using .env variables inside the container)
+# Set Laravel key (optional if already set in .env)
+# RUN php artisan key:generate
+
+# Clear and cache config
 RUN php artisan config:clear && php artisan config:cache
 
-# Expose port 80
+# Expose Apache
 EXPOSE 80
 
-# Run Apache in the foreground
+# Start Apache
 CMD ["apache2-foreground"]
