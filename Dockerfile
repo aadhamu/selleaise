@@ -26,6 +26,16 @@ RUN chown -R www-data:www-data /var/www/html \
 # Install dependencies
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
+
+
+# Create Laravel storage & cache folders and set permissions
+RUN mkdir -p storage/framework/{sessions,views,cache} && \
+    chmod -R 775 storage bootstrap/cache && \
+    chown -R www-data:www-data storage bootstrap/cache
+
+
+
+
 # Clear and skip Laravel caches
 RUN php artisan config:clear && \
     php artisan route:clear && \
