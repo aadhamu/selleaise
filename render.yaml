@@ -3,7 +3,9 @@ services:
     name: sellease
     env: docker
     plan: free
-    buildCommand: ""
+    # Run npm build *before* starting the container so public/build exists
+    buildCommand: "npm install && npm run build"
+    # startCommand runs migrations then apache
     startCommand: "php artisan migrate --force && apache2-foreground"
     envVars:
       - key: APP_ENV
@@ -13,6 +15,8 @@ services:
       - key: APP_DEBUG
         value: "false"
       - key: APP_URL
+        value: https://sellease.onrender.com
+      - key: VITE_URL
         value: https://sellease.onrender.com
 
       - key: DB_CONNECTION
