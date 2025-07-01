@@ -1,42 +1,37 @@
-# Use official PHP with Apache
 FROM php:8.2-apache
 
-# Enable Apache mod_rewrite
-RUN a2enmod rewrite
+# Enable required extensions
+RUN apt-get update && apt-get install -y \
+    git \
+    unzip \
+    curl \
+    libpq-dev \
+    libzip-dev \
+    zip \
+    && docker-php-ext-install pdo pdo_pgsql zip
 
 # Set working directory
 WORKDIR /var/www/html
 
-# Copy everything to container
-COPY . /var/www/html
+# Copy source code
+COPY . .
 
-# Change Apache's DocumentRoot to Laravel's public/
+# Set correct Apache doc root
 RUN sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/public|' /etc/apache2/sites-available/000-default.conf
-
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    unzip \
-    git \
-    libpq-dev \
-    libzip-dev \
-    && docker-php-ext-install pdo pdo_pgsql zip
-
-# Set permissions
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Install Laravel dependencies
+# Set permissions
+RUN chmod -R 755 storage bootstrap/cache
+
+# Install dependencies
 RUN composer install --no-dev --optimize-autoloader
 
-# Optional: run Laravel commands (uncomment if needed)
-# RUN php artisan config:cache
-# RUN php artisan migrate --force
-
-# Expose Apache port
-EXPOSE 80
+# Run Laravel setup tasks (cache config, migrate, etc)
+RUN php artisan config:clear && \
+    php artisan config:cache && \
+    php artisan migrate --force || true
 
 # Start Apache
 CMD ["apache2-foreground"]
