@@ -18,36 +18,26 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Copy all project files
 COPY . .
 
-# Set permissions
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 775 storage \
-    && chmod -R 775 bootstrap/cache
-
 # Install dependencies
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
+# Laravel cache (skip migrate at build)
+RUN php artisan config:clear \
+    && php artisan config:cache \
+    && php artisan route:cache \
+    && php artisan view:cache
 
-
-# Create Laravel storage & cache folders and set permissions
-RUN mkdir -p storage/framework/{sessions,views,cache} && \
-    chmod -R 775 storage bootstrap/cache && \
-    chown -R www-data:www-data storage bootstrap/cache
-
-
-
-
-# Clear and skip Laravel caches
-RUN php artisan config:clear && \
-    php artisan route:clear && \
-    php artisan view:clear && \
-    php artisan cache:clear
-
-
-# Point Apache to the public directory
+# Fix Apache root
 RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
+
+# ✅ FIX: Create missing Laravel directories and set permissions
+RUN mkdir -p storage/framework/{sessions,cache,views} \
+    && mkdir -p bootstrap/cache \
+    && chmod -R 775 storage bootstrap/cache \
+    && chown -R www-data:www-data storage bootstrap/cache
 
 # Expose port
 EXPOSE 80
 
-# Start Apache (skip migration for now)
-CMD ["apache2-foreground"]
+# Run migrate on container start (after env is loaded)
+CMD php artisan migrate --force && apache2-foreground
