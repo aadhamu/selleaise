@@ -35,17 +35,16 @@ RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available
 EXPOSE 80
 
 # Final setup and start Apache
-CMD mkdir -p \
-      storage/framework/sessions \
-      storage/framework/views \
-      storage/framework/cache \
-      bootstrap/cache \
-    && chmod -R 775 storage bootstrap/cache \
-    && chown -R www-data:www-data storage bootstrap/cache \
-    && php artisan storage:link \                     # ✅ This is the key fix
-    && php artisan config:clear \
-    && php artisan config:cache \
-    && php artisan route:cache \
-    && php artisan view:cache \
-    && php artisan migrate --force \
-    && apache2-foreground
+ CMD ["/bin/sh", "-c", " \
+    mkdir -p storage/framework/sessions storage/framework/views storage/framework/cache bootstrap/cache && \
+    chmod -R 775 storage bootstrap/cache && \
+    chown -R www-data:www-data storage bootstrap/cache && \
+    php artisan storage:link && \
+    php artisan config:clear && \
+    php artisan config:cache && \
+    php artisan route:cache && \
+    php artisan view:cache && \
+    php artisan migrate --force && \
+    apache2-foreground \
+"]
+
