@@ -13,28 +13,28 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
 # Enable Apache rewrite module
 RUN a2enmod rewrite
 
+# Set working directory
 WORKDIR /var/www/html
 
 # Copy Composer from official image
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copy ALL project files first (including artisan)
+# Copy all project files
 COPY . .
 
-# Install PHP dependencies (needs artisan present)
+# Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 
-# Install Node dependencies
-RUN npm install
+# Install Node dependencies and build assets
+RUN npm install && npm run build
 
-# Build frontend assets
-RUN npm run build
-
-# Fix Apache root to point to public folder
+# Point Apache to Laravel's public directory
 RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
 
+# Expose HTTP port
 EXPOSE 80
 
+# Final setup and start Apache
 CMD mkdir -p \
       storage/framework/sessions \
       storage/framework/views \
@@ -42,6 +42,7 @@ CMD mkdir -p \
       bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache \
     && chown -R www-data:www-data storage bootstrap/cache \
+    && php artisan storage:link \                     # ✅ This is the key fix
     && php artisan config:clear \
     && php artisan config:cache \
     && php artisan route:cache \
