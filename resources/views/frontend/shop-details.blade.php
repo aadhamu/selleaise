@@ -125,7 +125,7 @@
     </div>
     <div class="row px-xl-5">
         @foreach($relatedProducts as $product)
-        <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+        <div class="col-lg-3 col-md-6 col-6 pb-2">
             <div class="card product-item border-0">
                 <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
                     <img class="img-fluid w-100" src="{{ $product->image_url }}" alt="{{ $product->name }}">
@@ -139,22 +139,30 @@
                         @endif
                     </div>
                 </div>
-                <div class="card-footer d-flex justify-content-between bg-light border">
-                    <a href="{{ route('shop-details', $product->slug) }}" class="btn btn-sm text-dark p-0">
-                        <i class="fas fa-eye text-success mr-1"></i>View Detail
-                    </a>
-                    <form action="{{ route('cart.add', $product->id) }}" method="POST">
-                        @csrf
-                        <input type="hidden" name="quantity" value="1">
-                        <button type="submit" class="btn btn-sm text-dark p-0">
-                            <i class="fas fa-shopping-cart text-success mr-1"></i>Add To Cart
-                        </button>
-                    </form>
-                </div>
+                <div class="card-footer d-flex justify-content-between bg-light border px-2 py-1">
+    <a href="{{ route('shop-details', $product->slug) }}" class="btn btn-xs text-dark px-1 py-0">
+        <i class="fas fa-eye text-success mr-1"></i>View
+    </a>
+    <form action="{{ route('cart.add', $product->id) }}" method="POST" class="d-inline">
+        @csrf
+        <input type="hidden" name="quantity" value="1">
+        <button type="submit" class="btn btn-xs text-dark px-1 py-0">
+            <i class="fas fa-shopping-cart text-success mr-1"></i>Cart
+        </button>
+    </form>
+</div>
+
             </div>
         </div>
         @endforeach
     </div>
 </div>
+<style>
+.btn-xs {
+    font-size: 0.75rem;
+    line-height: 1;
+    padding: 0.25rem 0.4rem;
+}
+</style>
 
 @endsection

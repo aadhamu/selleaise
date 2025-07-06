@@ -351,9 +351,9 @@
                 </form> -->
             </div>
             <div class="col-lg-3 col-6 text-right">
-                <a href="{{ route('admin.login') }}" class="btn-icon mr-2">
+                <!-- <a href="{{ route('admin.login') }}" class="btn-icon mr-2">
                     <i class="fas fa-user"></i>
-                </a>
+                </a> -->
                 <a href="{{ route('cart') }}" class="btn-icon position-relative">
                     <i class="fas fa-shopping-cart"></i>
                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
@@ -468,11 +468,13 @@
                     <div class="col-md-4 mb-5">
                         <h5 class="font-weight-bold text-white mb-4">Customer Service</h5>
                         <ul class="list-unstyled footer-links">
-                            <li><a href="#"><i class="fa fa-angle-right mr-2"></i>My Account</a></li>
+                            <!-- <li><a href="#"><i class="fa fa-angle-right mr-2"></i>My Account</a></li>
                             <li><a href="#"><i class="fa fa-angle-right mr-2"></i>Order Tracking</a></li>
-                            <li><a href="#"><i class="fa fa-angle-right mr-2"></i>Wishlist</a></li>
-                            <li><a href="#"><i class="fa fa-angle-right mr-2"></i>Terms & Conditions</a></li>
-                            <li><a href="#"><i class="fa fa-angle-right mr-2"></i>Privacy Policy</a></li>
+                            <li><a href="#"><i class="fa fa-angle-right mr-2"></i>Wishlist</a></li> -->
+                            <li><a href="{{ url('/terms') }}" target="_blank"><i class="fa fa-angle-right mr-2"></i>Terms & Conditions</a></li>
+                            <li><a href="{{ url('/privacy') }}" target="_blank"><i class="fa fa-angle-right mr-2"></i>Privacy Policy</a></li>
+
+
                         </ul>
                     </div>
                     <div class="col-md-4 mb-5">
@@ -501,7 +503,7 @@
                     &copy; <span class="text-success">2025 SellEase</span>. All Rights Reserved.
                 </p>
             </div>
-            <div class="col-md-6 px-xl-0 text-center text-md-right">
+            <!-- <div class="col-md-6 px-xl-0 text-center text-md-right">
                 <div class="d-inline-flex">
                     <a class="text-white-50 px-2" href="#">
                         <i class="fab fa-facebook-f"></i>
@@ -515,7 +517,7 @@
                     <a class="text-white-50 px-2" href="#">
                         <i class="fab fa-instagram"></i>
                     </a>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>

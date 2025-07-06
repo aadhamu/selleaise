@@ -95,34 +95,32 @@
 
             <div class="col-lg-4">
                 <div class="card border-secondary mb-5">
-                    <div class="card-header bg-secondary border-0">
-                        <h4 class="font-weight-semi-bold m-0">Order Total</h4>
-                    </div>
-                    <div class="card-body">
-                        <h5 class="font-weight-medium mb-3">Products</h5>
-                        @foreach($items as $item)
-                        <div class="d-flex justify-content-between">
-                            <p>{{ $item->product->name }} (x{{ $item->quantity }})</p>
-                            <p> ₦{{ number_format($item->product->price * $item->quantity, 2) }}</p>
-                        </div>
-                        @endforeach
-                        <hr class="mt-0">
-                        <div class="d-flex justify-content-between mb-3 pt-1">
-                            <h6 class="font-weight-medium">Subtotal</h6>
-                            <h6 class="font-weight-medium"> ₦{{ number_format($subtotal, 2) }}</h6>
-                        </div>
-                        <div class="d-flex justify-content-between">
-                            <h6 class="font-weight-medium">Shipping</h6>
-                            <h6 class="font-weight-medium"> ₦{{ number_format($shipping, 2) }}</h6>
-                        </div>
-                    </div>
-                    <div class="card-footer border-secondary bg-transparent">
-                        <div class="d-flex justify-content-between mt-2">
-                            <h5 class="font-weight-bold">Total</h5>
-                            <h5 class="font-weight-bold"> ₦{{ number_format($total, 2) }}</h5>
-                        </div>
-                    </div>
-                </div>
+    <div class="card-header bg-secondary border-0">
+        <h4 class="font-weight-semi-bold m-0">Order Total</h4>
+    </div>
+    <div class="card-body">
+        <h5 class="font-weight-medium mb-3">Products</h5>
+        @foreach($items as $item)
+        <div class="d-flex justify-content-between">
+            <p>{{ $item->product->name }} (x{{ $item->quantity }})</p>
+            <p> ₦{{ number_format($item->product->price * $item->quantity, 2) }}</p>
+        </div>
+        @endforeach
+        <hr class="mt-0">
+        <div class="d-flex justify-content-between mb-3 pt-1">
+            <h6 class="font-weight-medium">Subtotal</h6>
+            <h6 class="font-weight-medium"> ₦{{ number_format($subtotal, 2) }}</h6>
+        </div>
+        {{-- Removed shipping charges --}}
+    </div>
+    <div class="card-footer border-secondary bg-transparent">
+        <div class="d-flex justify-content-between mt-2">
+            <h5 class="font-weight-bold">Total</h5>
+            <h5 class="font-weight-bold"> ₦{{ number_format($total, 2) }}</h5>
+        </div>
+    </div>
+</div>
+
 
                 <button type="button" id="manualpayment"  class="btn btn-lg btn-block btn-primary font-weight-bold my-3 py-3">
                     Make manual transafer

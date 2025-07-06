@@ -32,6 +32,12 @@ use Illuminate\Support\Facades\File;
 // Frontend Routes
 Route::get('/', [FrontendController::class, 'welcome'])->name('home');
 Route::get('/shop', [FrontendController::class, 'shop'])->name('shop');
+
+//customer
+// Public access to terms and privacy
+Route::view('/terms', 'layout.terms')->name('terms');
+Route::view('/privacy', 'layout.privacy')->name('privacy');
+
 // Route::get('/shop/{id}', [FrontendController::class, 'shopDetails'])->name('shop-details');
 Route::get('/contact', [FrontendController::class, 'contact'])->name('contact');
 Route::post('/contact', [ContactMessageController::class, 'store'])->name('contact.store');
@@ -98,6 +104,9 @@ Route::prefix('admin')->group(function() {
         Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
         Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
         Route::put('/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.update-status');
+
+
+
 
 
 

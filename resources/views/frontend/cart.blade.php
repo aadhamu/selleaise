@@ -23,13 +23,13 @@
                 {{ session('success') }}
             </div>
             @endif
-            
+
             @if(session('error'))
             <div class="alert alert-danger mb-4">
                 {{ session('error') }}
             </div>
             @endif
-            
+
             @if($items->isEmpty())
             <div class="alert alert-info">
                 Your cart is empty. <a href="{{ route('shop') }}">Continue shopping</a>
@@ -99,7 +99,7 @@
             </table>
             @endif
         </div>
-        
+
         <div class="col-lg-4">
             @if(!$items->isEmpty())
             <div class="card border-secondary mb-5">
@@ -111,17 +111,12 @@
                         <h6 class="font-weight-medium">Subtotal</h6>
                         <h6 class="font-weight-medium" id="subtotal">₦{{ number_format($subtotal, 2) }}</h6>
                     </div>
-                    <div class="d-flex justify-content-between">
-                        <h6 class="font-weight-medium">Transfer Charges</h6>
-                        <h6 class="font-weight-medium" id="shipping">₦{{ number_format($shipping, 2) }}</h6>
-                    </div>
                     <div class="d-flex justify-content-between mt-2">
                         <h5 class="font-weight-bold">Total</h5>
-                        <h5 class="font-weight-bold" id="total">₦{{ number_format($total, 2) }}</h5>
+                        <h5 class="font-weight-bold" id="total">₦{{ number_format($subtotal, 2) }}</h5>
                     </div>
                     <a href="{{ route('checkout') }}" class="btn btn-block btn-primary my-3 py-3">Proceed To Checkout</a>
                 </div>
-                
             </div>
             @endif
         </div>
@@ -133,12 +128,10 @@
 @push('scripts')
 <script>
 $(document).ready(function() {
-    // Store original quantities on page load
     $('.quantity-input').each(function() {
         $(this).data('original-value', $(this).val());
     });
 
-    // Quantity button handlers
     $('.btn-minus, .btn-plus').click(function(e) {
         e.preventDefault();
         let input = $(this).closest('.input-group').find('.quantity-input');
@@ -159,7 +152,6 @@ $(document).ready(function() {
         }
     });
 
-    // Auto-update cart when quantity changes
     $('.quantity-input').change(function() {
         let input = $(this);
         let form = input.closest('form');
@@ -168,18 +160,15 @@ $(document).ready(function() {
         let quantity = parseInt(input.val());
         let itemId = form.attr('action').split('/').pop();
 
-        // Validate quantity
         if (isNaN(quantity)) {
             input.val(input.data('original-value'));
             return;
         }
 
-        // Immediately update the UI
         let newTotal = (price * quantity).toFixed(2);
-        row.find('td:nth-child(4)').text('$' + newTotal);
+        row.find('td:nth-child(4)').text('₦' + newTotal);
         updateCartSummary();
 
-        // Send AJAX request
         $.ajax({
             url: form.attr('action'),
             method: 'POST',
@@ -190,17 +179,9 @@ $(document).ready(function() {
             },
             success: function(response) {
                 if (response.success) {
-                    // Update all values from server response
                     $('#subtotal').text('₦' + response.subtotal);
-                    $('#shipping').text('₦' + response.shipping);
                     $('#total').text('₦' + response.total);
                     row.find('td:nth-child(4)').text('₦' + response.item_total);
-                    
-                    // Update max quantity based on stock
-                    let maxStock = response.current_stock || input.attr('max');
-                    input.attr('max', maxStock);
-                    
-                    // Update original value
                     input.data('original-value', input.val());
                 } else {
                     showError(response.message);
@@ -218,30 +199,26 @@ $(document).ready(function() {
             let originalValue = input.data('original-value');
             input.val(originalValue);
             let originalTotal = (price * originalValue).toFixed(2);
-            row.find('td:nth-child(4)').text('$' + originalTotal);
+            row.find('td:nth-child(4)').text('₦' + originalTotal);
             updateCartSummary();
         }
 
         function showError(message) {
-            // Use a toast or alert
             alert(message);
         }
     });
 
     function updateCartSummary() {
         let subtotal = 0;
-        
+
         $('tbody tr').each(function() {
             let price = parseFloat($(this).find('td:nth-child(2)').text().replace(/[^\d.]/g, ''));
             let quantity = parseInt($(this).find('.quantity-input').val());
             subtotal += price * quantity;
         });
-        
-        let shipping = parseFloat($('#shipping').text().replace(/[^\d.]/g, ''));
-        let total = subtotal + shipping;
-        
+
         $('#subtotal').text('₦' + subtotal.toFixed(2));
-        $('#total').text('₦' + total.toFixed(2));
+        $('#total').text('₦' + subtotal.toFixed(2));
     }
 });
 </script>

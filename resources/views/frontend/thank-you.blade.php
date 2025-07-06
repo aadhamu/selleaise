@@ -54,10 +54,10 @@
                         <span>Subtotal</span>
                         <span>₦{{ number_format($order->subtotal, 2) }}</span>
                     </div>
-                    <div class="d-flex justify-content-between align-items-center py-2">
+                    <!-- <div class="d-flex justify-content-between align-items-center py-2">
                         <span>Shipping</span>
                         <span>₦{{ number_format($order->shipping, 2) }}</span>
-                    </div>
+                    </div> -->
                     <div class="d-flex justify-content-between align-items-center pt-2 border-top">
                         <strong>Total</strong>
                         <strong>₦{{ number_format($order->total, 2) }}</strong>
