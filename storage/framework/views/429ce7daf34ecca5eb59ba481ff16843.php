@@ -85,17 +85,19 @@
                                 </div>
                             </div>
                             <div class="card-footer d-flex justify-content-between bg-light border px-2 py-1">
-                                <a href="<?php echo e(route('shop-details', $product->slug)); ?>" class="btn btn-xs text-dark px-1 py-0 font-weight-normal">
-                                    <i class="fas fa-eye text-primary mr-1"></i> View
-                                </a>
-                                <form action="<?php echo e(route('cart.add', $product->id)); ?>" method="POST" class="d-inline">
-                                    <?php echo csrf_field(); ?>
-                                    <input type="hidden" name="quantity" value="1">
-                                    <button type="submit" class="btn btn-xs text-dark px-1 py-0 font-weight-normal">
-                                        <i class="fas fa-shopping-cart text-primary mr-1"></i> Cart
-                                    </button>
-                                </form>
-                            </div>
+    <a href="<?php echo e(route('shop-details', $product->slug)); ?>" 
+       class="btn btn-xs text-dark px-1 py-0 font-weight-normal btn-sm-text">
+        <i class="fas fa-eye text-primary mr-1"></i> View
+    </a>
+    
+    <form action="<?php echo e(route('cart.add', $product->id)); ?>" method="POST" class="d-inline">
+        <?php echo csrf_field(); ?>
+        <input type="hidden" name="quantity" value="1">
+        <button type="submit" class="btn btn-xs text-dark px-1 py-0 font-weight-normal btn-sm-text">
+            <i class="fas fa-shopping-cart text-primary mr-1"></i> Cart
+        </button>
+    </form>
+</div>
                         </div>
                     </div>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -110,7 +112,13 @@
     </div>
 </div>
 <!-- Shop End -->
-
+<style>
+    @media (max-width: 576px) {
+        .btn-sm-text {
+            font-size: 0.75rem !important;
+        }
+    }
+</style>
 <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('layout.frontend', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xamppp\htdocs\selleaise\resources\views/frontend/shop.blade.php ENDPATH**/ ?>

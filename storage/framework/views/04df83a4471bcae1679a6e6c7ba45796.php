@@ -1,40 +1,38 @@
-@extends('layout.frontend')
-
-@section('hero')
+<?php $__env->startSection('hero'); ?>
 <!-- Hero Carousel -->
 <div class="container-fluid px-0">
     <div id="header-carousel" class="carousel slide" data-ride="carousel" data-interval="5000">
         <div class="carousel-inner">
             <div class="carousel-item active" style="height: 500px;">
-                <img class="img-fluid w-100 h-100" src="{{ asset('eshopper-1.0.0/img/caro1.jpeg') }}" 
+                <img class="img-fluid w-100 h-100" src="<?php echo e(asset('eshopper-1.0.0/img/caro1.jpeg')); ?>" 
                      alt="Image" style="object-fit: cover;">
                 <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                     <div class="p-3" style="max-width: 700px;">
-                        {{-- <h4 class="text-light text-uppercase font-weight-medium mb-3">10% Off Your First Order</h4> --}}
+                        
                         <h3 class="display-4 font-weight-bold mb-4" style="color: var(--secondary-color);">Fast And Simple Buys</h3>
-                        <a href="{{ route('shop') }}" class="btn btn-success py-2 px-3">Shop Now</a>
+                        <a href="<?php echo e(route('shop')); ?>" class="btn btn-success py-2 px-3">Shop Now</a>
                     </div>
                 </div>
             </div>
             <div class="carousel-item" style="height: 500px;">
-                <img class="img-fluid w-100 h-100" src="{{ asset('eshopper-1.0.0/img/caro2.jpeg') }}" 
+                <img class="img-fluid w-100 h-100" src="<?php echo e(asset('eshopper-1.0.0/img/caro2.jpeg')); ?>" 
                      alt="Image" style="object-fit: cover;">
                 <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                     <div class="p-3" style="max-width: 700px;">
-                        {{-- <h4 class="text-light text-uppercase font-weight-medium mb-3">10% Off Your First Order</h4> --}}
+                        
                         <h3 class="display-4 font-weight-bold mb-4"  style="color: var(--secondary-color);">Buy Smarter</h3>
-                        <a href="{{ route('shop') }}" class="btn btn-success py-2 px-3">Shop Now</a>
+                        <a href="<?php echo e(route('shop')); ?>" class="btn btn-success py-2 px-3">Shop Now</a>
                     </div>
                 </div>
             </div>
             <div class="carousel-item" style="height: 500px;">
-                <img class="img-fluid w-100 h-100" src="{{ asset('eshopper-1.0.0/img/caro3.jpeg') }}" 
+                <img class="img-fluid w-100 h-100" src="<?php echo e(asset('eshopper-1.0.0/img/caro3.jpeg')); ?>" 
                      alt="Image" style="object-fit: cover;">
                 <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                     <div class="p-3" style="max-width: 700px;">
-                        {{-- <h4 class="text-light text-uppercase font-weight-medium mb-3">10% Off Your First Order</h4> --}}
+                        
                         <h3 class="display-4 font-weight-bold mb-4"  style="color: var(--secondary-color);">Manage Better</h3>
-                        <a href="{{ route('shop') }}" class="btn btn-success py-2 px-3">Shop Now</a>
+                        <a href="<?php echo e(route('shop')); ?>" class="btn btn-success py-2 px-3">Shop Now</a>
                     </div>
                 </div>
             </div>
@@ -51,42 +49,11 @@
         </a>
     </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
     <!-- Featured Start -->
-    {{-- <div class="container-fluid pt-5">
-        <div class="row px-xl-5 pb-3">
-            <div class="col-lg-3 col-md-4 col-6 pb-1">
-
-                <div class="d-flex align-items-center border mb-4" style="padding: 30px;">
-                    <h1 class="fa fa-check text-primary m-0 mr-3"></h1>
-                    <h5 class="font-weight-semi-bold m-0">Quality Product</h5>
-                </div>
-            </div>
-           <div class="col-lg-3 col-md-4 col-6 pb-1">
-
-                <div class="d-flex align-items-center border mb-4" style="padding: 30px;">
-                    <h1 class="fa fa-shipping-fast text-primary m-0 mr-2"></h1>
-                    <h5 class="font-weight-semi-bold m-0">Free Shipping</h5>
-                </div>
-            </div>
-<div class="col-lg-3 col-md-4 col-6 pb-1">
-
-                <div class="d-flex align-items-center border mb-4" style="padding: 30px;">
-                    <h1 class="fas fa-exchange-alt text-primary m-0 mr-3"></h1>
-                    <h5 class="font-weight-semi-bold m-0">14-Day Return</h5>
-                </div>
-            </div>
-<div class="col-lg-3 col-md-4 col-6 pb-1">
-
-                <div class="d-flex align-items-center border mb-4" style="padding: 30px;">
-                    <h1 class="fa fa-phone-volume text-primary m-0 mr-3"></h1>
-                    <h5 class="font-weight-semi-bold m-0">24/7 Support</h5>
-                </div>
-            </div>
-        </div>
-    </div> --}}
+    
     <!-- Featured End -->
 
     <!-- Featured Products Start -->
@@ -175,27 +142,27 @@
             <h2 class="section-title px-5" style="color: var(--secondary-color);"><span class="px-2">New Arrivals</span></h2>
         </div>
         <div class="row px-xl-5 pb-3">
-            @foreach($newArrivals as $product)
+            <?php $__currentLoopData = $newArrivals; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
                 <div class="card product-item border-0 mb-4">
                     <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                        <img class="img-fluid" src="{{ $product->image_url }}" alt="{{ $product->name }}">
+                        <img class="img-fluid" src="<?php echo e($product->image_url); ?>" alt="<?php echo e($product->name); ?>">
                     </div>
                     <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                        <h6 class="text-truncate mb-3 font-weight-bold" style="color: var(--secondary-color);">{{ $product->name }}</h6>
+                        <h6 class="text-truncate mb-3 font-weight-bold" style="color: var(--secondary-color);"><?php echo e($product->name); ?></h6>
                         <div class="d-flex justify-content-center">
-                            <h6 class="text-success">₦{{ number_format($product->price, 2) }}</h6>
-                            @if($product->discount_price)
-                            <h6 class="text-muted ml-2"><del>₦{{ number_format($product->discount_price, 2) }}</del></h6>
-                            @endif
+                            <h6 class="text-success">₦<?php echo e(number_format($product->price, 2)); ?></h6>
+                            <?php if($product->discount_price): ?>
+                            <h6 class="text-muted ml-2"><del>₦<?php echo e(number_format($product->discount_price, 2)); ?></del></h6>
+                            <?php endif; ?>
                         </div>
                     </div>
                     <div class="card-footer d-flex justify-content-between bg-light border">
-                        <a href="{{ route('shop-details', $product->slug) }}" class="btn btn-sm  p-0" style="color: var(--secondary-color);">
+                        <a href="<?php echo e(route('shop-details', $product->slug)); ?>" class="btn btn-sm  p-0" style="color: var(--secondary-color);">
                             <i class="fas fa-eye font-weight-bold text-success mr-1 p-0 font-weight-bold"></i>View Detail
                         </a>
-                        <form action="{{ route('cart.add', $product->id) }}" method="POST">
-                            @csrf
+                        <form action="<?php echo e(route('cart.add', $product->id)); ?>" method="POST">
+                            <?php echo csrf_field(); ?>
                             <input type="hidden" name="quantity" value="1">
                             <button type="submit" class="btn btn-sm  p-0" style="color: var(--secondary-color);">
                                 <i class="fas fa-shopping-cart font-weight-bold text-success mr-1 p-0 font-weight-bold"></i>Add To Cart
@@ -204,7 +171,7 @@
                     </div>
                 </div>
             </div>
-            @endforeach
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </div>
     </div> -->
     <div class="container-fluid pt-5">
@@ -215,30 +182,30 @@
     </div>
 
     <div class="row px-xl-5 pb-3">
-        @foreach($newArrivals->take(4) as $product)
+        <?php $__currentLoopData = $newArrivals->take(4); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <div class="col-lg-3 col-md-4 col-6 pb-1">
 
                 <div class="card product-item border-0 mb-4">
                     <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                        <img class="img-fluid" src="{{ $product->image_url }}" alt="{{ $product->name }}">
+                        <img class="img-fluid" src="<?php echo e($product->image_url); ?>" alt="<?php echo e($product->name); ?>">
                     </div>
                     <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                        <h6 class="text-truncate mb-3 font-weight-bold" style="color: var(--secondary-color);">{{ $product->name }}</h6>
+                        <h6 class="text-truncate mb-3 font-weight-bold" style="color: var(--secondary-color);"><?php echo e($product->name); ?></h6>
                         <div class="d-flex justify-content-center">
-                            <h6 class="text-success">₦{{ number_format($product->price, 2) }}</h6>
-                            @if($product->discount_price)
-                                <h6 class="text-muted ml-2"><del>₦{{ number_format($product->discount_price, 2) }}</del></h6>
-                            @endif
+                            <h6 class="text-success">₦<?php echo e(number_format($product->price, 2)); ?></h6>
+                            <?php if($product->discount_price): ?>
+                                <h6 class="text-muted ml-2"><del>₦<?php echo e(number_format($product->discount_price, 2)); ?></del></h6>
+                            <?php endif; ?>
                         </div>
                     </div>
                     <div class="card-footer d-flex justify-content-between bg-light border px-2 py-1">
-    <a href="{{ route('shop-details', $product->slug) }}" 
+    <a href="<?php echo e(route('shop-details', $product->slug)); ?>" 
        class="btn btn-xs text-dark px-1 py-0 font-weight-normal btn-sm-text">
         <i class="fas fa-eye text-primary mr-1"></i> View
     </a>
     
-    <form action="{{ route('cart.add', $product->id) }}" method="POST" class="d-inline">
-        @csrf
+    <form action="<?php echo e(route('cart.add', $product->id)); ?>" method="POST" class="d-inline">
+        <?php echo csrf_field(); ?>
         <input type="hidden" name="quantity" value="1">
         <button type="submit" class="btn btn-xs text-dark px-1 py-0 font-weight-normal btn-sm-text">
             <i class="fas fa-shopping-cart text-primary mr-1"></i> Cart
@@ -247,15 +214,15 @@
 </div>
                 </div>
             </div>
-        @endforeach
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
     </div>
 
-    {{-- Show "Go to Shop" if there are more than 4 items --}}
-    @if($newArrivals->count() >= 4)
+    
+    <?php if($newArrivals->count() >= 4): ?>
         <div class="text-center mt-3">
-            <a href="{{ route('shop') }}" class="btn btn-outline-success">Go to Shop</a>
+            <a href="<?php echo e(route('shop')); ?>" class="btn btn-outline-success">Go to Shop</a>
         </div>
-    @endif
+    <?php endif; ?>
 </div>
 
     <!-- New Arrivals End -->
@@ -270,7 +237,7 @@
 
 
     <!-- Subscribe Start -->
-<div class="container-fluid py-5" style="background: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)), url('{{ asset('eshopper-1.0.0/img/caro1.jpeg') }}') no-repeat center center; background-size: cover;">
+<div class="container-fluid py-5" style="background: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)), url('<?php echo e(asset('eshopper-1.0.0/img/caro1.jpeg')); ?>') no-repeat center center; background-size: cover;">
     <div class="row justify-content-md-center px-xl-5">
         <div class="col-md-8 col-12 text-center">
             <h2 class="section-title px-5 mb-3"><span class="bg-light px-2">Curated with Care</span></h2>
@@ -288,28 +255,28 @@
             <h2 class="section-title px-5" style="color: var(--secondary-color);"><span class="px-2">Featured Products</span></h2>
         </div>
         <div class="row px-xl-5 pb-3">
-            @foreach($featuredProducts as $product)
+            <?php $__currentLoopData = $featuredProducts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
           <div class="col-lg-3 col-md-4 col-6 pb-1">
 
                 <div class="card product-item border-0 mb-4">
                     <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                        <img class="img-fluid" src="{{ $product->image_url }}" alt="{{ $product->name }}">
+                        <img class="img-fluid" src="<?php echo e($product->image_url); ?>" alt="<?php echo e($product->name); ?>">
                     </div>
                     <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                        <h6 class="text-truncate mb-3 font-weight-bold" style="color: var(--secondary-color);">{{ $product->name }}</h6>
+                        <h6 class="text-truncate mb-3 font-weight-bold" style="color: var(--secondary-color);"><?php echo e($product->name); ?></h6>
                         <div class="d-flex justify-content-center">
-                            <h6 class="text-success">₦{{ number_format($product->price, 2) }}</h6>
-                            @if($product->discount_price)
-                            <h6 class="text-muted ml-2"><del>₦{{ number_format($product->discount_price, 2) }}</del></h6>
-                            @endif
+                            <h6 class="text-success">₦<?php echo e(number_format($product->price, 2)); ?></h6>
+                            <?php if($product->discount_price): ?>
+                            <h6 class="text-muted ml-2"><del>₦<?php echo e(number_format($product->discount_price, 2)); ?></del></h6>
+                            <?php endif; ?>
                         </div>
                     </div>
                     <div class="card-footer d-flex justify-content-between bg-light border">
-                        <a href="{{ route('shop-details', $product->slug) }}" class="btn btn-sm  p-0 font-weight-bold" style="color: var(--secondary-color);">
+                        <a href="<?php echo e(route('shop-details', $product->slug)); ?>" class="btn btn-sm  p-0 font-weight-bold" style="color: var(--secondary-color);">
                             <i class="fas fa-eye text-success mr-1 font-weight-bold"></i>View Detail
                         </a>
-                        <form action="{{ route('cart.add', $product->id) }}" method="POST">
-                            @csrf
+                        <form action="<?php echo e(route('cart.add', $product->id)); ?>" method="POST">
+                            <?php echo csrf_field(); ?>
                             <input type="hidden" name="quantity" value="1">
                             <button type="submit" class="btn btn-sm  p-0" style="color: var(--secondary-color);">
                                 <i class="fas fa-shopping-cart text-success mr-1 font-weight-bold"></i>Add To Cart
@@ -318,11 +285,11 @@
                     </div>
                 </div>
             </div>
-            @endforeach
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </div>
     </div>
     <!-- Featured Products End -->
-@endsection
+<?php $__env->stopSection(); ?>
 
 <style>
     html {
@@ -336,3 +303,5 @@
         }
     }
 </style>
+
+<?php echo $__env->make('layout.frontend', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xamppp\htdocs\selleaise\resources\views/frontend/welcome.blade.php ENDPATH**/ ?>

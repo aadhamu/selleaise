@@ -32,6 +32,10 @@ services:
       - key: DB_PASSWORD
         value: hcwQhHDMLZowzJgqMYgeTHv6utdUNvdP
 
+      - key: PAYSTACK_PUBLIC_KEY
+        value: pk_live_d18d25bd75ff0954e4f5d5bdfabb7c67800e369e
+
+
       - key: LOG_CHANNEL
         value: stderr
       - key: CACHE_DRIVER
