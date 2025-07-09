@@ -14,7 +14,9 @@ use App\Http\Controllers\Admin\ContactInfoController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ContactMessageController;
 use Illuminate\Support\Facades\File;
-
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use Illuminate\Support\Str;
+use App\Models\Product;
 // use App\Http\Controllers\ContactMessageController;
 
 
@@ -127,12 +129,22 @@ Route::prefix('admin')->group(function() {
 Route::get('/home', [HomeController::class, 'index'])->name('dashboard.home'); 
 
 
-Route::get('/debug-log', function () {
-    $logPath = storage_path('logs/laravel.log');
 
-    if (!File::exists($logPath)) {
-        return 'No log file found.';
-    }
+ 
 
-    return nl2br(e(File::get($logPath)));
+
+ 
+
+
+
+Route::get('/final-fix-images', function () {
+    Product::all()->each(function ($product) {
+        if (str_starts_with($product->image_url, 'http://localhost/storage/')) {
+            $fixed = str_replace('http://localhost/storage/', '', $product->image_url);
+            $product->update(['image_url' => $fixed]);
+        }
+    });
+
+    return '✅ Final fix applied to old image URLs';
 });
+ 

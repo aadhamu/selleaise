@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Str;
 
 class Product extends Model
 {
@@ -43,10 +44,11 @@ class Product extends Model
 
     public function getImageUrlAttribute($value)
     {
-        if ($value) {
-            return asset('storage/'.$value);
+        if (!$value) {
+            return asset('images/default-product.png');
         }
-        return asset('images/default-product.png');
+
+        return Str::startsWith($value, 'http') ? $value : asset('storage/' . $value);
     }
 
     public function getGalleryImagesAttribute($value)
@@ -56,13 +58,13 @@ class Product extends Model
         }
 
         $images = is_string($value) ? json_decode($value, true) : $value;
-        
+
         if (!is_array($images)) {
             return [];
         }
 
-        return array_map(function($image) {
-            return asset('storage/'.$image);
+        return array_map(function ($image) {
+            return Str::startsWith($image, 'http') ? $image : asset('storage/' . $image);
         }, $images);
     }
 

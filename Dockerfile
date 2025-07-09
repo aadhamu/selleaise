@@ -19,7 +19,7 @@ RUN a2enmod rewrite
 # Copy Composer from official image
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copy project files
+# Copy all files
 COPY . .
 
 # Install PHP dependencies
@@ -34,12 +34,11 @@ RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available
 # Expose HTTP port
 EXPOSE 80
 
-# Final container command: setup + serve
-CMD ["/bin/sh", "-c", " \
+# Final container startup
+CMD ["/bin/sh", "-c", "\
     mkdir -p storage/framework/sessions storage/framework/views storage/framework/cache bootstrap/cache && \
     chmod -R 775 storage bootstrap/cache && \
     chown -R www-data:www-data storage bootstrap/cache && \
-    php artisan storage:link && \
     php artisan config:clear && \
     php artisan config:cache && \
     php artisan route:cache && \
