@@ -15,8 +15,6 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ContactMessageController;
 use Illuminate\Support\Facades\File;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
-use Illuminate\Support\Str;
-use App\Models\Product;
 // use App\Http\Controllers\ContactMessageController;
 
 
@@ -137,14 +135,4 @@ Route::get('/home', [HomeController::class, 'index'])->name('dashboard.home');
 
 
 
-Route::get('/final-fix-images', function () {
-    Product::all()->each(function ($product) {
-        if (str_starts_with($product->image_url, 'http://localhost/storage/')) {
-            $fixed = str_replace('http://localhost/storage/', '', $product->image_url);
-            $product->update(['image_url' => $fixed]);
-        }
-    });
-
-    return '✅ Final fix applied to old image URLs';
-});
  

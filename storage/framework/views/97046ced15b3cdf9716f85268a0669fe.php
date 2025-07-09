@@ -1,12 +1,12 @@
-@extends('layout.frontend')
 
-@section('content')
+
+<?php $__env->startSection('content'); ?>
 <!-- Page Header Start -->
 <div class="container-fluid bg-secondary mb-5">
     <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
         <h1 class="font-weight-semi-bold text-uppercase mb-3">Checkout</h1>
         <div class="d-inline-flex">
-            <p class="m-0"><a href="{{ route('home') }}">Home</a></p>
+            <p class="m-0"><a href="<?php echo e(route('home')); ?>">Home</a></p>
             <p class="m-0 px-2">-</p>
             <p class="m-0">Checkout</p>
         </div>
@@ -100,23 +100,23 @@
     </div>
     <div class="card-body">
         <h5 class="font-weight-medium mb-3">Products</h5>
-        @foreach($items as $item)
+        <?php $__currentLoopData = $items; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
         <div class="d-flex justify-content-between">
-            <p>{{ $item->product->name }} (x{{ $item->quantity }})</p>
-            <p> ₦{{ number_format($item->product->price * $item->quantity, 2) }}</p>
+            <p><?php echo e($item->product->name); ?> (x<?php echo e($item->quantity); ?>)</p>
+            <p> ₦<?php echo e(number_format($item->product->price * $item->quantity, 2)); ?></p>
         </div>
-        @endforeach
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         <hr class="mt-0">
         <div class="d-flex justify-content-between mb-3 pt-1">
             <h6 class="font-weight-medium">Subtotal</h6>
-            <h6 class="font-weight-medium"> ₦{{ number_format($subtotal, 2) }}</h6>
+            <h6 class="font-weight-medium"> ₦<?php echo e(number_format($subtotal, 2)); ?></h6>
         </div>
-        {{-- Removed shipping charges --}}
+        
     </div>
     <div class="card-footer border-secondary bg-transparent">
         <div class="d-flex justify-content-between mt-2">
             <h5 class="font-weight-bold">Total</h5>
-            <h5 class="font-weight-bold"> ₦{{ number_format($total, 2) }}</h5>
+            <h5 class="font-weight-bold"> ₦<?php echo e(number_format($total, 2)); ?></h5>
         </div>
     </div>
 </div>
@@ -142,7 +142,7 @@
                 
                 <div class="bank-details">
                     <h4 class="font-weight-semi-bold mb-3">Payment Instructions</h4>
-                    <h5 class="font-weight-bold">Order Total: ₦{{ number_format($total, 2) }}</h5>
+                    <h5 class="font-weight-bold">Order Total: ₦<?php echo e(number_format($total, 2)); ?></h5>
                     <hr>
                     
                     <h6 class="font-weight-bold mt-4">Please transfer the exact amount to:</h6>
@@ -189,8 +189,8 @@
                     <i class="fa fa-arrow-left"></i> Back to Payment
                 </button>
                 
-                <form id="finalCheckoutForm" action="{{ route('checkout.store') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
+                <form id="finalCheckoutForm" action="<?php echo e(route('checkout.store')); ?>" method="POST" enctype="multipart/form-data">
+                    <?php echo csrf_field(); ?>
                     <!-- Hidden Billing Fields -->
                      <input type="hidden" name="payment_reference" id="payment_reference">
 
@@ -200,7 +200,7 @@
                     <input type="hidden" name="phone" id="hidden_phone">
                     <input type="hidden" name="address1" id="hidden_address1">
                     <input type="hidden" name="payment_method" value="bank_transfer">
-                    <input type="hidden" name="order_total" value="{{ $total }}">
+                    <input type="hidden" name="order_total" value="<?php echo e($total); ?>">
                     
                     <div class="form-group">
                         <label for="payment_receipt">Payment Receipt</label>
@@ -223,11 +223,11 @@
     </div>
 </div>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
 <script>
-    const PAYSTACK_PUBLIC_KEY = "{{ $paystackKey }}";
-    const ORDER_TOTAL = {{ $total * 100 }};
-    const ORDER_TOTAL_DISPLAY = {{ $total }};
+    const PAYSTACK_PUBLIC_KEY = "<?php echo e($paystackKey); ?>";
+    const ORDER_TOTAL = <?php echo e($total * 100); ?>;
+    const ORDER_TOTAL_DISPLAY = <?php echo e($total); ?>;
 </script>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -247,7 +247,7 @@ document.getElementById('proceedToPaymentBtn').addEventListener('click', functio
 
     const handler = PaystackPop.setup({
         key: PAYSTACK_PUBLIC_KEY,
-        email: "olibeychimaoji@gmail.com",
+        email: "ogbenihappy05@gmail.com",
         amount: ORDER_TOTAL,
         currency: "NGN",
         ref: reference,
@@ -255,10 +255,10 @@ document.getElementById('proceedToPaymentBtn').addEventListener('click', functio
             // Make sure Paystack callback ran
             console.log("Paystack payment reference:", response.reference);
 
-            fetch("{{ route('checkout.store') }}", {
+            fetch("<?php echo e(route('checkout.store')); ?>", {
                 method: "POST",
                 headers: {
-                    "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                    "X-CSRF-TOKEN": "<?php echo e(csrf_token()); ?>",
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
@@ -413,6 +413,7 @@ $(document).ready(function() {
     });
 });
 </script>
-@endpush
+<?php $__env->stopPush(); ?>
 
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layout.frontend', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xamppp\htdocs\selleaise\resources\views/frontend/checkout.blade.php ENDPATH**/ ?>
