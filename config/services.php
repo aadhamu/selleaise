@@ -32,7 +32,7 @@ return [
     ],
 
     'paystack' => [
-    'public_key' => env('pk_live_d18d25bd75ff0954e4f5d5bdfabb7c67800e369e'),
+    'public_key' => env('PAYSTACK_PUBLIC_KEY'),
     'secret_key' => env('PAYSTACK_SECRET_KEY'),
 ],
 
