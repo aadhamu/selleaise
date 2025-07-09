@@ -150,7 +150,7 @@
                     <div class="mt-3">
                         <div class="detail-row mb-2">
                             <span class="font-weight-bold">Bank Name:</span>
-                            <span>Opay</span>
+                            <span>Moniepoint</span>
                         </div>
                         <div class="detail-row mb-2">
                             <span class="font-weight-bold">Account Name:</span>
@@ -158,7 +158,7 @@
                         </div>
                         <div class="detail-row mb-2">
                             <span class="font-weight-bold">Account Number:</span>
-                            <span>9037441520</span>
+                            <span>8236930152</span>
                             <button class="btn btn-sm btn-outline-secondary copy-btn" onclick="copyToClipboard('9037441520')">
                                 <i class="fa fa-copy"></i> Copy
                             </button>
