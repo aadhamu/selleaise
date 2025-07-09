@@ -154,7 +154,7 @@
                         </div>
                         <div class="detail-row mb-2">
                             <span class="font-weight-bold">Account Name:</span>
-                            <span>Chima Oji Olibey Samuel</span>
+                            <span>Lillian Oriaku</span>
                         </div>
                         <div class="detail-row mb-2">
                             <span class="font-weight-bold">Account Number:</span>
