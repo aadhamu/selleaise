@@ -59,6 +59,7 @@ class ProductController extends Controller
             'is_active' => 'sometimes|in:0,1',
             'is_featured' => 'sometimes|in:0,1',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+            'gallery_images' => 'nullable|array',
             'gallery_images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'sizes' => 'nullable|array',
             'sizes.*' => 'string|max:10',
@@ -78,7 +79,9 @@ class ProductController extends Controller
             foreach ($request->file('gallery_images') as $image) {
                 $galleryPaths[] = Cloudinary::upload($image->getRealPath())->getSecurePath();
             }
-            $validated['gallery_images'] = json_encode($galleryPaths);
+           $product->gallery_images = json_decode($product->gallery_images, true) ?? [];
+
+
         }
 
         $validated['slug'] = Str::slug($validated['name']);
