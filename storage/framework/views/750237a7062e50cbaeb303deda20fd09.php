@@ -109,9 +109,7 @@
             </div>
 
             <!-- Optional UX Boost -->
-            <div class="alert alert-success mt-4 text-center" style="font-size: 0.95rem;">
-                ✅ Enjoy same-day delivery in Abuja & 7-day money-back guarantee!
-            </div>
+             
         </div>
     </div>
 </div>

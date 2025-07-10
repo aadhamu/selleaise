@@ -206,7 +206,7 @@
                     </div>
 
                     <!-- Gallery Images -->
-                        <div class="space-y-6">
+                        <!-- <div class="space-y-6">
                             <div>
                                 <h2 class="text-xl font-semibold text-gray-900">Gallery Images</h2>
                                 <p class="mt-1 text-sm text-gray-500">Upload additional product photos</p>
@@ -237,7 +237,7 @@
                                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
-                        </div>
+                        </div> -->
 
                     <!-- Sizes and Colors -->
                     <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">

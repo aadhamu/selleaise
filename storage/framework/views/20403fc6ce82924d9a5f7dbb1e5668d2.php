@@ -297,7 +297,7 @@ unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <!-- Gallery Images -->
-                        <div class="space-y-6">
+                        <!-- <div class="space-y-6">
                             <div>
                                 <h2 class="text-xl font-semibold text-gray-900">Gallery Images</h2>
                                 <p class="mt-1 text-sm text-gray-500">Upload additional product photos</p>
@@ -342,7 +342,7 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
                             </div>
-                        </div>
+                        </div> -->
 
                     <!-- Sizes and Colors -->
                     <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
