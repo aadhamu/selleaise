@@ -245,6 +245,14 @@ document.getElementById('proceedToPaymentBtn').addEventListener('click', functio
 
     const reference = 'ORD-' + Math.floor((Math.random() * 1000000000) + 1);
 
+
+
+
+    const proceedBtn = document.getElementById('proceedToPaymentBtn');
+proceedBtn.disabled = true;
+proceedBtn.innerText = "Processing...";
+
+
     const handler = PaystackPop.setup({
         key: PAYSTACK_PUBLIC_KEY,
         email: document.getElementById("email").value,

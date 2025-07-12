@@ -33,109 +33,118 @@ class CheckoutController extends Controller
     }
 
     public function store(Request $request)
-{
-    $cart = $this->getCart();
+    {
+        $cart = $this->getCart();
 
-    if ($cart->items()->count() === 0) {
-        return response()->json(['success' => false, 'message' => 'Your cart is empty.']);
-    }
-
-    $items = $cart->items()->with('product')->get();
-    $subtotal = $items->sum(fn($item) => $item->product->price * $item->quantity);
-    $total = $subtotal;
-
-    try {
-        $validated = $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'phone' => 'required|string|max:20',
-            'address1' => 'required|string|max:255',
-            'payment_method' => 'required|string',
-            'order_total' => 'required|numeric',
-        ]);
-
-        $receiptPath = null;
-
-        if ($request->payment_method === 'bank_transfer') {
-            $request->validate([
-                'payment_receipt' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
-            ]);
-
-            $receipt = $request->file('payment_receipt');
-
-            $uploaded = Cloudinary::upload($receipt->getRealPath(), [
-                'folder' => 'receipts',
-                'resource_type' => 'auto' // handles images + pdfs
-            ]);
-
-            $receiptPath = $uploaded->getSecurePath(); // ✅ Store cloud URL
+        if ($cart->items()->count() === 0) {
+            return response()->json(['success' => false, 'message' => 'Your cart is empty.']);
         }
 
-        if ($request->payment_method === 'paystack') {
-            $request->validate([
-                'payment_reference' => 'required|string',
+        $items = $cart->items()->with('product')->get();
+        $subtotal = $items->sum(fn($item) => $item->product->price * $item->quantity);
+        $total = $subtotal;
+
+        try {
+            $validated = $request->validate([
+                'first_name' => 'required|string|max:255',
+                'last_name' => 'required|string|max:255',
+                'email' => 'required|email|max:255',
+                'phone' => 'required|string|max:20',
+                'address1' => 'required|string|max:255',
+                'payment_method' => 'required|string',
+                'order_total' => 'required|numeric',
             ]);
 
-            $reference = $request->payment_reference;
+            $receiptPath = null;
 
-            $verifyResult = $this->verifyPaystackPayment($reference);
+            if ($request->payment_method === 'bank_transfer') {
+                $request->validate([
+                    'payment_receipt' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
+                ]);
 
-            if (!$verifyResult['status']) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Payment verification failed: ' . $verifyResult['message']
+                $receipt = $request->file('payment_receipt');
+
+                $uploaded = Cloudinary::upload($receipt->getRealPath(), [
+                    'folder' => 'receipts',
+                    'resource_type' => 'auto'
+                ]);
+
+                $receiptPath = $uploaded->getSecurePath();
+            }
+
+            if ($request->payment_method === 'paystack') {
+                $request->validate([
+                    'payment_reference' => 'required|string',
+                ]);
+
+                $reference = $request->payment_reference;
+
+                $verifyResult = $this->verifyPaystackPayment($reference);
+
+                if (!$verifyResult['status']) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Payment verification failed: ' . $verifyResult['message']
+                    ]);
+                }
+            }
+
+            $order = Order::create([
+                'order_number' => 'ORD-' . strtoupper(uniqid()),
+                'billing_address' => json_encode([
+                    'first_name' => $validated['first_name'],
+                    'last_name' => $validated['last_name'],
+                    'email' => $validated['email'],
+                    'phone' => $validated['phone'],
+                    'address1' => $validated['address1'],
+                ]),
+                'payment_method' => $validated['payment_method'],
+                'payment_receipt' => $receiptPath,
+                'subtotal' => $subtotal,
+                'shipping' => 0,
+                'total' => $validated['order_total'],
+                'user_id' => auth()->id(),
+                'status' => 'pending',
+                'payment_status' => $request->payment_method === 'paystack' ? Order::PAYMENT_STATUS_PAID : Order::PAYMENT_STATUS_PENDING
+            ]);
+
+            foreach ($cart->items as $item) {
+                $order->items()->create([
+                    'product_id' => $item->product_id,
+                    'quantity' => $item->quantity,
+                    'price' => $item->product->price,
+                    'selected_size' => $item->selected_size,
+                    'selected_color' => $item->selected_color
                 ]);
             }
+
+            $cart->items()->delete();
+
+            // ✅ PAYSTACK — return JSON so JS can redirect
+            if ($request->payment_method === 'paystack') {
+                return response()->json([
+                    'success' => true,
+                    'order_id' => $order->id
+                ]);
+            }
+
+            // ✅ BANK TRANSFER — traditional redirect
+            return redirect()->route('checkout.success', ['order' => $order->id])
+                ->with('success', 'Order placed successfully!');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation failed',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong. Please try again or contact support.',
+                'error' => $e->getMessage()
+            ], 500);
         }
-
-        $order = Order::create([
-            'order_number' => 'ORD-' . strtoupper(uniqid()),
-            'billing_address' => json_encode([
-                'first_name' => $validated['first_name'],
-                'last_name' => $validated['last_name'],
-                'email' => $validated['email'],
-                'phone' => $validated['phone'],
-                'address1' => $validated['address1'],
-            ]),
-            'payment_method' => $validated['payment_method'],
-            'payment_receipt' => $receiptPath,
-            'subtotal' => $subtotal,
-            'shipping' => 0,
-            'total' => $validated['order_total'],
-            'user_id' => auth()->id(),
-            'status' => 'pending'
-        ]);
-
-        foreach ($cart->items as $item) {
-            $order->items()->create([
-                'product_id' => $item->product_id,
-                'quantity' => $item->quantity,
-                'price' => $item->product->price,
-                'selected_size' => $item->selected_size,
-                'selected_color' => $item->selected_color
-            ]);
-        }
-
-        $cart->items()->delete();
-
-        return redirect()->route('checkout.success', ['order' => $order->id])
-            ->with('success', 'Order placed successfully!');
-    } catch (\Illuminate\Validation\ValidationException $e) {
-        return response()->json([
-            'success' => false,
-            'message' => 'Validation failed',
-            'errors' => $e->errors()
-        ], 422);
-    } catch (\Exception $e) {
-        return response()->json([
-            'success' => false,
-            'message' => 'Something went wrong. Please try again or contact support.',
-            'error' => $e->getMessage()
-        ], 500);
     }
-}
-
 
     protected function verifyPaystackPayment($reference)
     {
