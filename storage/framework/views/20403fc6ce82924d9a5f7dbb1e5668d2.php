@@ -345,27 +345,40 @@ unset($__errorArgs, $__bag); ?>
                         </div> -->
 
                     <!-- Sizes and Colors -->
-                    <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                    <!-- <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6"> -->
                         <!-- Sizes -->
-                        <div class="sm:col-span-3">
+                        <!-- <div class="sm:col-span-3">
                             <label for="sizes" class="block text-sm font-medium text-gray-700">Available Sizes</label>
-                            <div class="mt-1">
-                                <select id="sizes" name="sizes[]" multiple class="block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm py-3 px-4 border <?php $__errorArgs = ['sizes'];
+                            <div class="mt-2 space-y-2">
+    <?php
+        $selectedSizes = old('sizes', isset($product) ? ($product->sizes ?? []) : []);
+        $allSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+    ?>
+
+    <?php $__currentLoopData = $allSizes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $size): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+        <div class="flex items-center">
+            <input type="checkbox" id="size_<?php echo e($size); ?>" name="sizes[]" value="<?php echo e($size); ?>"
+                class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                <?php echo e(in_array($size, $selectedSizes) ? 'checked' : ''); ?>>
+            <label for="size_<?php echo e($size); ?>" class="ml-2 block text-sm text-gray-700">
+                <?php echo e($size); ?>
+
+            </label>
+        </div>
+    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+
+    <?php $__errorArgs = ['sizes'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> border-red-300 text-red-900 placeholder-red-300 focus:outline-none focus:ring-red-500 focus:border-red-500 <?php unset($message);
+$message = $__bag->first($__errorArgs[0]); ?>
+        <p class="text-red-500 text-sm mt-1"><?php echo e($message); ?></p>
+    <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>">
-                                    <option value="XS" <?php echo e(in_array('XS', old('sizes', isset($product) ? ($product->sizes ?? []) : [])) ? 'selected' : ''); ?>>XS</option>
-                                    <option value="S" <?php echo e(in_array('S', old('sizes', isset($product) ? ($product->sizes ?? []) : [])) ? 'selected' : ''); ?>>S</option>
-                                    <option value="M" <?php echo e(in_array('M', old('sizes', isset($product) ? ($product->sizes ?? []) : [])) ? 'selected' : ''); ?>>M</option>
-                                    <option value="L" <?php echo e(in_array('L', old('sizes', isset($product) ? ($product->sizes ?? []) : [])) ? 'selected' : ''); ?>>L</option>
-                                    <option value="XL" <?php echo e(in_array('XL', old('sizes', isset($product) ? ($product->sizes ?? []) : [])) ? 'selected' : ''); ?>>XL</option>
-                                    <option value="XXL" <?php echo e(in_array('XXL', old('sizes', isset($product) ? ($product->sizes ?? []) : [])) ? 'selected' : ''); ?>>XXL</option>
-                                </select>
-                            </div>
+unset($__errorArgs, $__bag); ?>
+</div>
+
                             <?php $__errorArgs = ['sizes'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -376,30 +389,41 @@ $message = $__bag->first($__errorArgs[0]); ?>
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
-                        </div>
+                        </div> -->
 
                         <!-- Colors -->
-                        <div class="sm:col-span-3">
+                        <!-- <div class="sm:col-span-3">
     <label for="colors" class="block text-sm font-medium text-gray-700">Available Colors</label>
-    <div class="mt-1">
-        <select id="colors" name="colors[]" multiple
-            class="block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm py-3 px-4 border
-            <?php $__errorArgs = ['colors'];
+    <div class="mt-2 space-y-2">
+    <?php
+        $selectedColors = old('colors', isset($product) ? (array) $product->colors : []);
+        $allColors = ['Red', 'Blue', 'Green', 'Black', 'White', 'Yellow'];
+    ?>
+
+    <?php $__currentLoopData = $allColors; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $color): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+        <div class="flex items-center">
+            <input type="checkbox" id="color_<?php echo e($color); ?>" name="colors[]" value="<?php echo e($color); ?>"
+                class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                <?php echo e(in_array($color, $selectedColors) ? 'checked' : ''); ?>>
+            <label for="color_<?php echo e($color); ?>" class="ml-2 block text-sm text-gray-700">
+                <?php echo e($color); ?>
+
+            </label>
+        </div>
+    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+
+    <?php $__errorArgs = ['colors'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> border-red-300 text-red-900 placeholder-red-300 focus:outline-none focus:ring-red-500 focus:border-red-500 <?php unset($message);
+$message = $__bag->first($__errorArgs[0]); ?>
+        <p class="text-red-500 text-sm mt-1"><?php echo e($message); ?></p>
+    <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>">
-            <option value="Red" <?php echo e(in_array('Red', old('colors', isset($product) ? (array) $product->colors : [])) ? 'selected' : ''); ?>>Red</option>
-            <option value="Blue" <?php echo e(in_array('Blue', old('colors', isset($product) ? (array) $product->colors : [])) ? 'selected' : ''); ?>>Blue</option>
-            <option value="Green" <?php echo e(in_array('Green', old('colors', isset($product) ? (array) $product->colors : [])) ? 'selected' : ''); ?>>Green</option>
-            <option value="Black" <?php echo e(in_array('Black', old('colors', isset($product) ? (array) $product->colors : [])) ? 'selected' : ''); ?>>Black</option>
-            <option value="White" <?php echo e(in_array('White', old('colors', isset($product) ? (array) $product->colors : [])) ? 'selected' : ''); ?>>White</option>
-            <option value="Yellow" <?php echo e(in_array('Yellow', old('colors', isset($product) ? (array) $product->colors : [])) ? 'selected' : ''); ?>>Yellow</option>
-        </select>
-    </div>
+unset($__errorArgs, $__bag); ?>
+</div>
+
     <?php $__errorArgs = ['colors'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -413,7 +437,7 @@ unset($__errorArgs, $__bag); ?>
 </div>
 
                     </div>
-                </div>
+                </div> -->
 
                 <!-- Form Footer -->
                 <div class="px-8 py-4 bg-gray-50 border-t border-gray-200 flex justify-end">

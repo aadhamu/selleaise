@@ -244,43 +244,65 @@
                         <!-- Sizes -->
                         <div class="sm:col-span-3">
                             <label for="sizes" class="block text-sm font-medium text-gray-700">Available Sizes</label>
-                            <div class="mt-1">
-                                <select id="sizes" name="sizes[]" multiple class="block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm py-3 px-4 border @error('sizes') border-red-300 text-red-900 placeholder-red-300 focus:outline-none focus:ring-red-500 focus:border-red-500 @enderror">
-                                    <option value="XS" {{ in_array('XS', old('sizes', isset($product) ? ($product->sizes ?? []) : [])) ? 'selected' : '' }}>XS</option>
-                                    <option value="S" {{ in_array('S', old('sizes', isset($product) ? ($product->sizes ?? []) : [])) ? 'selected' : '' }}>S</option>
-                                    <option value="M" {{ in_array('M', old('sizes', isset($product) ? ($product->sizes ?? []) : [])) ? 'selected' : '' }}>M</option>
-                                    <option value="L" {{ in_array('L', old('sizes', isset($product) ? ($product->sizes ?? []) : [])) ? 'selected' : '' }}>L</option>
-                                    <option value="XL" {{ in_array('XL', old('sizes', isset($product) ? ($product->sizes ?? []) : [])) ? 'selected' : '' }}>XL</option>
-                                    <option value="XXL" {{ in_array('XXL', old('sizes', isset($product) ? ($product->sizes ?? []) : [])) ? 'selected' : '' }}>XXL</option>
-                                </select>
-                            </div>
+                            <div class="mt-2 space-y-2">
+    @php
+        $selectedSizes = old('sizes', isset($product) ? ($product->sizes ?? []) : []);
+        $allSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+    @endphp
+
+    @foreach ($allSizes as $size)
+        <div class="flex items-center">
+            <input type="checkbox" id="size_{{ $size }}" name="sizes[]" value="{{ $size }}"
+                class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                {{ in_array($size, $selectedSizes) ? 'checked' : '' }}>
+            <label for="size_{{ $size }}" class="ml-2 block text-sm text-gray-700">
+                {{ $size }}
+            </label>
+        </div>
+    @endforeach
+
+    @error('sizes')
+        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+    @enderror
+</div>
+
                             @error('sizes')
                                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 
                         <!-- Colors -->
-                        <div class="sm:col-span-3">
+                        <!-- <div class="sm:col-span-3">
     <label for="colors" class="block text-sm font-medium text-gray-700">Available Colors</label>
-    <div class="mt-1">
-        <select id="colors" name="colors[]" multiple
-            class="block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm py-3 px-4 border
-            @error('colors') border-red-300 text-red-900 placeholder-red-300 focus:outline-none focus:ring-red-500 focus:border-red-500 @enderror">
-            <option value="Red" {{ in_array('Red', old('colors', isset($product) ? (array) $product->colors : [])) ? 'selected' : '' }}>Red</option>
-            <option value="Blue" {{ in_array('Blue', old('colors', isset($product) ? (array) $product->colors : [])) ? 'selected' : '' }}>Blue</option>
-            <option value="Green" {{ in_array('Green', old('colors', isset($product) ? (array) $product->colors : [])) ? 'selected' : '' }}>Green</option>
-            <option value="Black" {{ in_array('Black', old('colors', isset($product) ? (array) $product->colors : [])) ? 'selected' : '' }}>Black</option>
-            <option value="White" {{ in_array('White', old('colors', isset($product) ? (array) $product->colors : [])) ? 'selected' : '' }}>White</option>
-            <option value="Yellow" {{ in_array('Yellow', old('colors', isset($product) ? (array) $product->colors : [])) ? 'selected' : '' }}>Yellow</option>
-        </select>
-    </div>
+    <div class="mt-2 space-y-2">
+    @php
+        $selectedColors = old('colors', isset($product) ? (array) $product->colors : []);
+        $allColors = ['Red', 'Blue', 'Green', 'Black', 'White', 'Yellow'];
+    @endphp
+
+    @foreach ($allColors as $color)
+        <div class="flex items-center">
+            <input type="checkbox" id="color_{{ $color }}" name="colors[]" value="{{ $color }}"
+                class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                {{ in_array($color, $selectedColors) ? 'checked' : '' }}>
+            <label for="color_{{ $color }}" class="ml-2 block text-sm text-gray-700">
+                {{ $color }}
+            </label>
+        </div>
+    @endforeach
+
+    @error('colors')
+        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+    @enderror
+</div>
+
     @error('colors')
         <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
     @enderror
 </div>
 
                     </div>
-                </div>
+                </div> -->
 
                 <!-- Form Footer -->
                 <div class="px-8 py-4 bg-gray-50 border-t border-gray-200 flex justify-end">

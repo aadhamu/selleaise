@@ -315,16 +315,16 @@ unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <!-- Gallery Images Section -->
-                    <div class="space-y-6">
+                    <!-- <div class="space-y-6">
                         <div>
                             <h2 class="text-xl font-semibold text-gray-900">Gallery Images</h2>
                             <p class="mt-1 text-sm text-gray-500">Additional product photos</p>
                         </div>
                         
                         <div class="sm:col-span-6">
-                            <div class="flex flex-col sm:flex-row gap-6">
+                            <div class="flex flex-col sm:flex-row gap-6"> -->
                                 <!-- Current Gallery Images -->
-                                <div class="w-full sm:w-1/3">
+                                <!-- <div class="w-full sm:w-1/3">
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Current Gallery</label>
                                     <?php if($product->gallery_images && count(json_decode($product->gallery_images))): ?>
                                         <div class="grid grid-cols-2 gap-2">
@@ -339,10 +339,10 @@ unset($__errorArgs, $__bag); ?>
                                             <span class="text-gray-500 text-sm">No gallery images</span>
                                         </div>
                                     <?php endif; ?>
-                                </div>
+                                </div> -->
                                 
                                 <!-- New Gallery Images Upload -->
-                                <div class="w-full sm:w-2/3">
+                                <!-- <div class="w-full sm:w-2/3">
                                     <label for="gallery_images" class="block text-sm font-medium text-gray-700 mb-2">Update Gallery</label>
                                     <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-xl">
                                         <div class="space-y-1 text-center">
@@ -384,94 +384,83 @@ unset($__errorArgs, $__bag); ?>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
                     <!-- Sizes and Colors Section -->
                     <div class="space-y-6">
-                        <div>
-                            <h2 class="text-xl font-semibold text-gray-900">Variants</h2>
-                            <p class="mt-1 text-sm text-gray-500">Available sizes and colors</p>
-                        </div>
-                        
-                        <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
-                            <!-- Sizes -->
-                            <div class="sm:col-span-3">
-                                <label for="sizes" class="block text-sm font-medium text-gray-700">Available Sizes</label>
-                                <div class="mt-1">
-                                    <select id="sizes" name="sizes[]" multiple class="block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm py-3 px-4 border <?php $__errorArgs = ['sizes'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> border-red-300 text-red-900 placeholder-red-300 focus:outline-none focus:ring-red-500 focus:border-red-500 <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>">
-                                        <?php
-                                            $currentSizes = old('sizes', $product->sizes ?? []);
-                                            if (is_string($currentSizes)) {
-                                                $currentSizes = json_decode($currentSizes, true) ?? [];
-                                            }
-                                        ?>
-                                        <option value="XS" <?php echo e(in_array('XS', $currentSizes) ? 'selected' : ''); ?>>XS</option>
-                                        <option value="S" <?php echo e(in_array('S', $currentSizes) ? 'selected' : ''); ?>>S</option>
-                                        <option value="M" <?php echo e(in_array('M', $currentSizes) ? 'selected' : ''); ?>>M</option>
-                                        <option value="L" <?php echo e(in_array('L', $currentSizes) ? 'selected' : ''); ?>>L</option>
-                                        <option value="XL" <?php echo e(in_array('XL', $currentSizes) ? 'selected' : ''); ?>>XL</option>
-                                        <option value="XXL" <?php echo e(in_array('XXL', $currentSizes) ? 'selected' : ''); ?>>XXL</option>
-                                    </select>
-                                </div>
-                                <?php $__errorArgs = ['sizes'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                    <p class="mt-2 text-sm text-red-600"><?php echo e($message); ?></p>
-                                <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                            </div>
+    <div>
+        <h2 class="text-xl font-semibold text-gray-900">Variants</h2>
+        <p class="mt-1 text-sm text-gray-500">Available sizes and colors</p>
+    </div>
 
-                            <!-- Colors -->
-                            <div class="sm:col-span-3">
-                                <label for="colors" class="block text-sm font-medium text-gray-700">Available Colors</label>
-                                <div class="mt-1">
-                                    <select id="colors" name="colors[]" multiple class="block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm py-3 px-4 border <?php $__errorArgs = ['colors'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> border-red-300 text-red-900 placeholder-red-300 focus:outline-none focus:ring-red-500 focus:border-red-500 <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>">
-                                        <?php
-                                            $currentColors = old('colors', $product->colors ?? []);
-                                            if (is_string($currentColors)) {
-                                                $currentColors = json_decode($currentColors, true) ?? [];
-                                            }
-                                        ?>
-                                        <option value="Red" <?php echo e(in_array('Red', $currentColors) ? 'selected' : ''); ?>>Red</option>
-                                        <option value="Blue" <?php echo e(in_array('Blue', $currentColors) ? 'selected' : ''); ?>>Blue</option>
-                                        <option value="Green" <?php echo e(in_array('Green', $currentColors) ? 'selected' : ''); ?>>Green</option>
-                                        <option value="Black" <?php echo e(in_array('Black', $currentColors) ? 'selected' : ''); ?>>Black</option>
-                                        <option value="White" <?php echo e(in_array('White', $currentColors) ? 'selected' : ''); ?>>White</option>
-                                        <option value="Yellow" <?php echo e(in_array('Yellow', $currentColors) ? 'selected' : ''); ?>>Yellow</option>
-                                    </select>
-                                </div>
-                                <?php $__errorArgs = ['colors'];
+    <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+        <!-- Sizes -->
+        <div class="sm:col-span-3">
+            <label class="block text-sm font-medium text-gray-700">Available Sizes</label>
+            <?php
+                $currentSizes = old('sizes', $product->sizes ?? []);
+                if (is_string($currentSizes)) {
+                    $currentSizes = json_decode($currentSizes, true) ?? [];
+                }
+                $allSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+            ?>
+            <div class="mt-2 grid grid-cols-3 gap-2">
+                <?php $__currentLoopData = $allSizes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $size): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <label class="inline-flex items-center">
+                        <input type="checkbox" name="sizes[]" value="<?php echo e($size); ?>"
+                               class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                               <?php echo e(in_array($size, $currentSizes) ? 'checked' : ''); ?>>
+                        <span class="ml-2 text-sm text-gray-700"><?php echo e($size); ?></span>
+                    </label>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            </div>
+            <?php $__errorArgs = ['sizes'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                                    <p class="mt-2 text-sm text-red-600"><?php echo e($message); ?></p>
-                                <?php unset($message);
+                <p class="mt-2 text-sm text-red-600"><?php echo e($message); ?></p>
+            <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        </div>
+
+        <!-- Colors -->
+        <!-- <div class="sm:col-span-3">
+            <label class="block text-sm font-medium text-gray-700">Available Colors</label>
+            <?php
+                $currentColors = old('colors', $product->colors ?? []);
+                if (is_string($currentColors)) {
+                    $currentColors = json_decode($currentColors, true) ?? [];
+                }
+                $allColors = ['Red', 'Blue', 'Green', 'Black', 'White', 'Yellow'];
+            ?>
+            <div class="mt-2 grid grid-cols-3 gap-2">
+                <?php $__currentLoopData = $allColors; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $color): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <label class="inline-flex items-center">
+                        <input type="checkbox" name="colors[]" value="<?php echo e($color); ?>"
+                               class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                               <?php echo e(in_array($color, $currentColors) ? 'checked' : ''); ?>>
+                        <span class="ml-2 text-sm text-gray-700"><?php echo e($color); ?></span>
+                    </label>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            </div>
+            <?php $__errorArgs = ['colors'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                <p class="mt-2 text-sm text-red-600"><?php echo e($message); ?></p>
+            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+        </div>
+    </div>
+</div>
+
+                </div> -->
 
                 <!-- Form Footer -->
                 <div class="px-8 py-4 bg-gray-50 border-t border-gray-200 flex justify-end">
