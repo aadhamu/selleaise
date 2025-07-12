@@ -65,5 +65,4 @@ services:
 
 
 
-        TRUNCATE TABLE orders, order_items, carts, cart_items, products, categories, users RESTART IDENTITY CASCADE;
-
+        
