@@ -79,7 +79,8 @@ class ProductController extends Controller
             foreach ($request->file('gallery_images') as $image) {
                 $galleryPaths[] = Cloudinary::upload($image->getRealPath())->getSecurePath();
             }
-           $product->gallery_images = json_decode($product->gallery_images, true) ?? [];
+           $validated['gallery_images'] = json_encode($galleryPaths);
+
 
 
         }

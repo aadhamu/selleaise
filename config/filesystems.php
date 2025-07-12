@@ -56,6 +56,11 @@ return [
             'throw' => false,
         ],
 
+         'cloudinary' => [
+        'driver' => 'cloudinary',
+        ],
+
+
     ],
 
     /*

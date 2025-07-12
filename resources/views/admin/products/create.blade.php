@@ -261,21 +261,24 @@
 
                         <!-- Colors -->
                         <div class="sm:col-span-3">
-                            <label for="colors" class="block text-sm font-medium text-gray-700">Available Colors</label>
-                            <div class="mt-1">
-                                <select id="colors" name="colors[]" multiple class="block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm py-3 px-4 border @error('colors') border-red-300 text-red-900 placeholder-red-300 focus:outline-none focus:ring-red-500 focus:border-red-500 @enderror">
-                                    <option value="Red" {{ in_array('Red', old('colors', isset($product) ? ($product->colors ?? []) : [])) ? 'selected' : '' }}>Red</option>
-                                    <option value="Blue" {{ in_array('Blue', old('colors', isset($product) ? ($product->colors ?? []) : [])) ? 'selected' : '' }}>Blue</option>
-                                    <option value="Green" {{ in_array('Green', old('colors', isset($product) ? ($product->colors ?? []) : [])) ? 'selected' : '' }}>Green</option>
-                                    <option value="Black" {{ in_array('Black', old('colors', isset($product) ? ($product->colors ?? []) : [])) ? 'selected' : '' }}>Black</option>
-                                    <option value="White" {{ in_array('White', old('colors', isset($product) ? ($product->colors ?? []) : [])) ? 'selected' : '' }}>White</option>
-                                    <option value="Yellow" {{ in_array('Yellow', old('colors', isset($product) ? ($product->colors ?? []) : [])) ? 'selected' : '' }}>Yellow</option>
-                                </select>
-                            </div>
-                            @error('colors')
-                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
+    <label for="colors" class="block text-sm font-medium text-gray-700">Available Colors</label>
+    <div class="mt-1">
+        <select id="colors" name="colors[]" multiple
+            class="block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm py-3 px-4 border
+            @error('colors') border-red-300 text-red-900 placeholder-red-300 focus:outline-none focus:ring-red-500 focus:border-red-500 @enderror">
+            <option value="Red" {{ in_array('Red', old('colors', isset($product) ? (array) $product->colors : [])) ? 'selected' : '' }}>Red</option>
+            <option value="Blue" {{ in_array('Blue', old('colors', isset($product) ? (array) $product->colors : [])) ? 'selected' : '' }}>Blue</option>
+            <option value="Green" {{ in_array('Green', old('colors', isset($product) ? (array) $product->colors : [])) ? 'selected' : '' }}>Green</option>
+            <option value="Black" {{ in_array('Black', old('colors', isset($product) ? (array) $product->colors : [])) ? 'selected' : '' }}>Black</option>
+            <option value="White" {{ in_array('White', old('colors', isset($product) ? (array) $product->colors : [])) ? 'selected' : '' }}>White</option>
+            <option value="Yellow" {{ in_array('Yellow', old('colors', isset($product) ? (array) $product->colors : [])) ? 'selected' : '' }}>Yellow</option>
+        </select>
+    </div>
+    @error('colors')
+        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+    @enderror
+</div>
+
                     </div>
                 </div>
 

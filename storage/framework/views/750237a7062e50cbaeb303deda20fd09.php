@@ -28,12 +28,12 @@
                         </div>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </div>
-                <a class="carousel-control-prev" href="#product-carousel" data-slide="prev">
+                <!-- <a class="carousel-control-prev" href="#product-carousel" data-slide="prev">
                     <i class="fa fa-2x fa-angle-left text-success"></i>
                 </a>
                 <a class="carousel-control-next" href="#product-carousel" data-slide="next">
                     <i class="fa fa-2x fa-angle-right text-success"></i>
-                </a>
+                </a> -->
             </div>
         </div>
 

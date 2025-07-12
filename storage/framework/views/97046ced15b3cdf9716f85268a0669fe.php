@@ -150,15 +150,15 @@
                     <div class="mt-3">
                         <div class="detail-row mb-2">
                             <span class="font-weight-bold">Bank Name:</span>
-                            <span>Opay</span>
+                            <span>Moniepoint</span>
                         </div>
                         <div class="detail-row mb-2">
                             <span class="font-weight-bold">Account Name:</span>
-                            <span>Chima Oji Olibey Samuel</span>
+                            <span>Lillian Oriaku</span>
                         </div>
                         <div class="detail-row mb-2">
                             <span class="font-weight-bold">Account Number:</span>
-                            <span>9037441520</span>
+                            <span>8236930152</span>
                             <button class="btn btn-sm btn-outline-secondary copy-btn" onclick="copyToClipboard('9037441520')">
                                 <i class="fa fa-copy"></i> Copy
                             </button>
@@ -203,16 +203,17 @@
                     <input type="hidden" name="order_total" value="<?php echo e($total); ?>">
                     
                     <div class="form-group">
-                        <label for="payment_receipt">Payment Receipt</label>
-                        <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="payment_receipt" name="payment_receipt" required accept="image/*,.pdf">
-                            <label class="custom-file-label" for="payment_receipt">Choose file</label>
-                        </div>
-                        <small class="form-text text-muted">
-                            Accepted formats: JPG, PNG, PDF (Max 2MB)
-                        </small>
-                        <img id="receiptPreview" class="img-fluid mt-2" alt="Receipt Preview">
-                    </div>
+    <label for="payment_receipt">Payment Receipt</label>
+    <div class="custom-file">
+        <input type="file" class="custom-file-input" id="payment_receipt" name="payment_receipt" required accept="image/*,.pdf">
+        <label class="custom-file-label" for="payment_receipt">Choose file</label>
+    </div>
+    <small class="form-text text-muted">
+        Accepted formats: JPG, PNG, PDF (Max 2MB)
+    </small>
+    <div id="receiptPreview" class="mt-2"></div>
+</div>
+
                     
                     <button type="submit" class="btn btn-primary btn-lg">
                         <i class="fa fa-check"></i> Submit Order
@@ -234,7 +235,6 @@
 <script src="https://js.paystack.co/v1/inline.js"></script>
 
 <script>
-
 document.getElementById('proceedToPaymentBtn').addEventListener('click', function (e) {
     e.preventDefault();
 
@@ -247,14 +247,11 @@ document.getElementById('proceedToPaymentBtn').addEventListener('click', functio
 
     const handler = PaystackPop.setup({
         key: PAYSTACK_PUBLIC_KEY,
-        email: "ogbenihappy05@gmail.com",
+        email: document.getElementById("email").value,
         amount: ORDER_TOTAL,
         currency: "NGN",
         ref: reference,
-        callback: function(response) {
-            // Make sure Paystack callback ran
-            console.log("Paystack payment reference:", response.reference);
-
+        callback: function (response) {
             fetch("<?php echo e(route('checkout.store')); ?>", {
                 method: "POST",
                 headers: {
@@ -262,51 +259,48 @@ document.getElementById('proceedToPaymentBtn').addEventListener('click', functio
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-    first_name: document.getElementById("first_name").value,
-    last_name: document.getElementById("last_name").value,
-    email: document.getElementById("email").value,
-    phone: document.getElementById("phone").value,
-    address1: document.getElementById("address1").value,
-    payment_method: "paystack",
-    payment_reference: response.reference,
-    order_total: ORDER_TOTAL_DISPLAY
-})
-
+                    first_name: document.getElementById("first_name").value,
+                    last_name: document.getElementById("last_name").value,
+                    email: document.getElementById("email").value,
+                    phone: document.getElementById("phone").value,
+                    address1: document.getElementById("address1").value,
+                    payment_method: "paystack",
+                    payment_reference: response.reference,
+                    order_total: ORDER_TOTAL_DISPLAY
+                })
             })
-            .then(res => {
-                if (!res.ok) throw new Error("Network response was not ok");
-                return res.json();
-            })
-            .then(data => {
-                if (data.success) {
-                    window.location.href = `/thank-you/${data.order_id}`;
-                } else {
-                    alert("Payment verified but order creation failed: " + (data.message || "Unknown error."));
-                }
-            })
-            .catch(err => {
-                console.error("Checkout error:", err);
-                alert("Something went wrong. Please contact support.");
-            });
+                .then(res => {
+                    if (!res.ok) throw new Error("Network response was not ok");
+                    return res.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        window.location.href = `/thank-you/${data.order_id}`;
+                    } else {
+                        alert("Payment verified but order creation failed: " + (data.message || "Unknown error."));
+                    }
+                })
+                .catch(err => {
+                    console.error("Checkout error:", err);
+                    alert("Something went wrong. Please contact support.");
+                });
         },
-        onClose: function() {
+        onClose: function () {
             alert("Payment window closed.");
         }
     });
 
     handler.openIframe();
 });
-// Global variables to store billing data
+
 let billingData = {};
 
 function validateBillingForm() {
     let isValid = true;
-    
-    // Reset errors
+
     $('.is-invalid').removeClass('is-invalid');
     $('.invalid-feedback').text('');
-    
-    // Validate each field
+
     const fields = ['first_name', 'last_name', 'email', 'phone', 'address1'];
     fields.forEach(field => {
         const value = $(`#${field}`).val().trim();
@@ -314,16 +308,15 @@ function validateBillingForm() {
             $(`#${field}`).addClass('is-invalid');
             $(`#${field}_error`).text('This field is required');
             isValid = false;
-            
-            // Special validation for email
-            if (field === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-                $(`#${field}`).addClass('is-invalid');
-                $(`#${field}_error`).text('Please enter a valid email');
-                isValid = false;
-            }
+        }
+
+        if (field === 'email' && value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+            $(`#${field}`).addClass('is-invalid');
+            $(`#${field}_error`).text('Please enter a valid email');
+            isValid = false;
         }
     });
-    
+
     return isValid;
 }
 
@@ -343,11 +336,9 @@ function backToPayment() {
     $('#paymentDetailsSection').addClass('active');
 }
 
-$(document).ready(function() {
-    // Proceed to Payment
-    $('#manualpayment').click(function() {
+$(document).ready(function () {
+    $('#manualpayment').click(function () {
         if (validateBillingForm()) {
-            // Store billing data
             billingData = {
                 first_name: $('#first_name').val(),
                 last_name: $('#last_name').val(),
@@ -355,64 +346,75 @@ $(document).ready(function() {
                 phone: $('#phone').val(),
                 address1: $('#address1').val()
             };
-            
-            // Set hidden fields
+
             $('#hidden_first_name').val(billingData.first_name);
             $('#hidden_last_name').val(billingData.last_name);
             $('#hidden_email').val(billingData.email);
             $('#hidden_phone').val(billingData.phone);
             $('#hidden_address1').val(billingData.address1);
-            
-            // Show payment section
+
             $('#billingSection').removeClass('active');
             $('#paymentDetailsSection').addClass('active');
         }
     });
-    
-    // Upload Receipt
-    $('#uploadReceiptBtn').click(function() {
+
+    $('#uploadReceiptBtn').click(function () {
         $('#paymentDetailsSection').removeClass('active');
         $('#receiptUploadSection').addClass('active');
     });
-    
-    // Preview receipt image
-    $('#payment_receipt').change(function() {
+
+    // Handle receipt preview for both image and PDF
+    $('#payment_receipt').on('change', function () {
         const file = this.files[0];
-        const preview = $('#receiptPreview');
-        
-        if (file && file.type.match('image.*')) {
+        const previewContainer = $('#receiptPreview');
+        previewContainer.html(''); // Clear previous preview
+
+        if (!file) return;
+
+        const fileType = file.type;
+
+        if (fileType.startsWith('image/')) {
             const reader = new FileReader();
-            
-            reader.onload = function(e) {
-                preview.attr('src', e.target.result);
-                preview.show();
-            }
-            
+            reader.onload = function (e) {
+                const img = $('<img>', {
+                    src: e.target.result,
+                    class: 'img-fluid img-thumbnail mt-2',
+                    css: { maxHeight: '300px' }
+                });
+                previewContainer.append(img);
+            };
             reader.readAsDataURL(file);
+        } else if (fileType === 'application/pdf') {
+            const embed = $('<embed>', {
+                src: URL.createObjectURL(file),
+                type: 'application/pdf',
+                width: '100%',
+                height: '400px'
+            });
+            previewContainer.append(embed);
         } else {
-            preview.hide();
+            previewContainer.html('<p class="text-danger">Unsupported file format. Please upload JPG, PNG, or PDF.</p>');
         }
-        
-        // Update file label
-        const fileName = file ? file.name : 'Choose file';
-        $(this).next('.custom-file-label').text(fileName);
+
+        // Update file name on label
+        $(this).next('.custom-file-label').text(file.name);
     });
-    
-    // Final form submission
-    $('#finalCheckoutForm').submit(function() {
+
+    $('#finalCheckoutForm').submit(function () {
         if (!validateBillingForm()) {
             return false;
         }
-        
+
         if (!$('#payment_receipt').val()) {
             alert('Please upload your payment receipt');
             return false;
         }
-        
+
         return true;
     });
 });
 </script>
+
 <?php $__env->stopPush(); ?>
 
 <?php $__env->stopSection(); ?>

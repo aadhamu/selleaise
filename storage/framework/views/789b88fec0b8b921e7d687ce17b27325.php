@@ -1,6 +1,6 @@
-@extends('layouts.admin')
 
-@section('content')
+
+<?php $__env->startSection('content'); ?>
 <div class="container mx-auto px-4 py-8">
     <div class="flex flex-col space-y-6">
         <!-- Header -->
@@ -11,7 +11,7 @@
             </div>
         </div>
 
-        @if(session('success'))
+        <?php if(session('success')): ?>
         <div class="rounded-md bg-green-50 p-4">
             <div class="flex">
                 <div class="flex-shrink-0">
@@ -20,11 +20,11 @@
                     </svg>
                 </div>
                 <div class="ml-3">
-                    <p class="text-sm font-medium text-green-800">{{ session('success') }}</p>
+                    <p class="text-sm font-medium text-green-800"><?php echo e(session('success')); ?></p>
                 </div>
             </div>
         </div>
-        @endif
+        <?php endif; ?>
 
         <!-- Orders Table -->
         <div class="bg-white shadow rounded-lg overflow-hidden">
@@ -54,48 +54,49 @@
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
-                        @foreach($orders as $index => $order)
+                        <?php $__currentLoopData = $orders; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $order): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <tr>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm font-medium text-gray-900">{{ $index + 1 }}</div>
+                                <div class="text-sm font-medium text-gray-900"><?php echo e($index + 1); ?></div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900">{{ $order->created_at->format('M d, Y') }}</div>
+                                <div class="text-sm text-gray-900"><?php echo e($order->created_at->format('M d, Y')); ?></div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900">₦{{ number_format($order->total, 2) }}</div>
+                                <div class="text-sm text-gray-900">₦<?php echo e(number_format($order->total, 2)); ?></div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                               <form action="{{ route('admin.orders.update-status', $order) }}" method="POST" class="inline update-status-form">
-                                    @csrf
-                                    @method('PUT')
+                               <form action="<?php echo e(route('admin.orders.update-status', $order)); ?>" method="POST" class="inline update-status-form">
+                                    <?php echo csrf_field(); ?>
+                                    <?php echo method_field('PUT'); ?>
                                     <select 
                                         name="status" 
                                         class="text-xs border rounded p-1 focus:outline-none focus:ring-1 focus:ring-blue-500 status-select"
-                                        data-order="{{ $order->id }}"
+                                        data-order="<?php echo e($order->id); ?>"
                                     >
-                                        @foreach(['pending', 'processing', 'completed', 'cancelled'] as $status)
-                                            <option value="{{ $status }}" {{ $order->status === $status ? 'selected' : '' }}>
-                                                {{ ucfirst($status) }}
+                                        <?php $__currentLoopData = ['pending', 'processing', 'completed', 'cancelled']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $status): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <option value="<?php echo e($status); ?>" <?php echo e($order->status === $status ? 'selected' : ''); ?>>
+                                                <?php echo e(ucfirst($status)); ?>
+
                                             </option>
-                                        @endforeach
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </select>
                                 </form>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                @if($order->payment_receipt)
-<button onclick="showReceipt('{{ $order->payment_receipt }}')">View Receipt</button>
+                                <?php if($order->payment_receipt): ?>
+<button onclick="showReceipt('<?php echo e($order->payment_receipt); ?>')">View Receipt</button>
 
 
 
 
-                                @else
+                                <?php else: ?>
                                     <span class="text-sm text-gray-500">None</span>
-                                @endif
+                                <?php endif; ?>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                 <div class="flex space-x-2">
-                                    <a href="{{ route('admin.orders.show', $order) }}" class="text-blue-600 hover:text-blue-900" title="View Details">
+                                    <a href="<?php echo e(route('admin.orders.show', $order)); ?>" class="text-blue-600 hover:text-blue-900" title="View Details">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
@@ -104,15 +105,16 @@
                                 </div>
                             </td>
                         </tr>
-                        @endforeach
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </tbody>
                 </table>
             </div>
-            @if($orders->hasPages())
+            <?php if($orders->hasPages()): ?>
             <div class="px-6 py-4 border-t border-gray-200">
-                {{ $orders->links() }}
+                <?php echo e($orders->links()); ?>
+
             </div>
-            @endif
+            <?php endif; ?>
         </div>
     </div>
 </div>
@@ -206,7 +208,7 @@ document.addEventListener('DOMContentLoaded', function() {
     //             method: 'POST',
     //             headers: {
     //                 'Content-Type': 'application/json',
-    //                 'X-CSRF-TOKEN': '{{ csrf_token() }}',
+    //                 'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>',
     //                 'X-Requested-With': 'XMLHttpRequest',
     //                 'Accept': 'application/json'
     //             },
@@ -251,7 +253,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>',
                     'X-Requested-With': 'XMLHttpRequest',
                     'Accept': 'application/json'
                 },
@@ -310,4 +312,5 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xamppp\htdocs\selleaise\resources\views/admin/orders/index.blade.php ENDPATH**/ ?>

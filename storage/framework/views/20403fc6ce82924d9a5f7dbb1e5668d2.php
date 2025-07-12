@@ -380,9 +380,11 @@ unset($__errorArgs, $__bag); ?>
 
                         <!-- Colors -->
                         <div class="sm:col-span-3">
-                            <label for="colors" class="block text-sm font-medium text-gray-700">Available Colors</label>
-                            <div class="mt-1">
-                                <select id="colors" name="colors[]" multiple class="block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm py-3 px-4 border <?php $__errorArgs = ['colors'];
+    <label for="colors" class="block text-sm font-medium text-gray-700">Available Colors</label>
+    <div class="mt-1">
+        <select id="colors" name="colors[]" multiple
+            class="block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm py-3 px-4 border
+            <?php $__errorArgs = ['colors'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -390,25 +392,26 @@ $message = $__bag->first($__errorArgs[0]); ?> border-red-300 text-red-900 placeh
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>">
-                                    <option value="Red" <?php echo e(in_array('Red', old('colors', isset($product) ? ($product->colors ?? []) : [])) ? 'selected' : ''); ?>>Red</option>
-                                    <option value="Blue" <?php echo e(in_array('Blue', old('colors', isset($product) ? ($product->colors ?? []) : [])) ? 'selected' : ''); ?>>Blue</option>
-                                    <option value="Green" <?php echo e(in_array('Green', old('colors', isset($product) ? ($product->colors ?? []) : [])) ? 'selected' : ''); ?>>Green</option>
-                                    <option value="Black" <?php echo e(in_array('Black', old('colors', isset($product) ? ($product->colors ?? []) : [])) ? 'selected' : ''); ?>>Black</option>
-                                    <option value="White" <?php echo e(in_array('White', old('colors', isset($product) ? ($product->colors ?? []) : [])) ? 'selected' : ''); ?>>White</option>
-                                    <option value="Yellow" <?php echo e(in_array('Yellow', old('colors', isset($product) ? ($product->colors ?? []) : [])) ? 'selected' : ''); ?>>Yellow</option>
-                                </select>
-                            </div>
-                            <?php $__errorArgs = ['colors'];
+            <option value="Red" <?php echo e(in_array('Red', old('colors', isset($product) ? (array) $product->colors : [])) ? 'selected' : ''); ?>>Red</option>
+            <option value="Blue" <?php echo e(in_array('Blue', old('colors', isset($product) ? (array) $product->colors : [])) ? 'selected' : ''); ?>>Blue</option>
+            <option value="Green" <?php echo e(in_array('Green', old('colors', isset($product) ? (array) $product->colors : [])) ? 'selected' : ''); ?>>Green</option>
+            <option value="Black" <?php echo e(in_array('Black', old('colors', isset($product) ? (array) $product->colors : [])) ? 'selected' : ''); ?>>Black</option>
+            <option value="White" <?php echo e(in_array('White', old('colors', isset($product) ? (array) $product->colors : [])) ? 'selected' : ''); ?>>White</option>
+            <option value="Yellow" <?php echo e(in_array('Yellow', old('colors', isset($product) ? (array) $product->colors : [])) ? 'selected' : ''); ?>>Yellow</option>
+        </select>
+    </div>
+    <?php $__errorArgs = ['colors'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                                <p class="mt-2 text-sm text-red-600"><?php echo e($message); ?></p>
-                            <?php unset($message);
+        <p class="mt-2 text-sm text-red-600"><?php echo e($message); ?></p>
+    <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
-                        </div>
+</div>
+
                     </div>
                 </div>
 
