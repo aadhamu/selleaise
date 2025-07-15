@@ -159,7 +159,7 @@
                         <div class="detail-row mb-2">
                             <span class="font-weight-bold">Account Number:</span>
                             <span>8236930152</span>
-                            <button class="btn btn-sm btn-outline-secondary copy-btn" onclick="copyToClipboard('9037441520')">
+                            <button class="btn btn-sm btn-outline-secondary copy-btn" onclick="copyToClipboard('8236930152')">
                                 <i class="fa fa-copy"></i> Copy
                             </button>
                         </div>
@@ -209,8 +209,9 @@
         <label class="custom-file-label" for="payment_receipt">Choose file</label>
     </div>
     <small class="form-text text-muted">
-        Accepted formats: JPG, PNG, PDF (Max 2MB)
+        Accepted formats: JPG, PNG, PDF (Max 10MB)
     </small>
+
     <div id="receiptPreview" class="mt-2"></div>
 </div>
 
@@ -408,18 +409,24 @@ $(document).ready(function () {
         $(this).next('.custom-file-label').text(file.name);
     });
 
-    $('#finalCheckoutForm').submit(function () {
-        if (!validateBillingForm()) {
-            return false;
-        }
+   $('#finalCheckoutForm').submit(function () {
+    const file = $('#payment_receipt')[0].files[0];
 
-        if (!$('#payment_receipt').val()) {
-            alert('Please upload your payment receipt');
-            return false;
-        }
+    if (!validateBillingForm()) return false;
 
-        return true;
-    });
+    if (!file) {
+        alert('Please upload your payment receipt');
+        return false;
+    }
+
+    if (file.size > 10 * 1024 * 1024) {
+        alert('File too large. Maximum allowed size is 10MB.');
+        return false;
+    }
+
+    return true;
+});
+
 });
 </script>
 

@@ -1,16 +1,20 @@
 
 
 <?php $__env->startSection('content'); ?>
+
+<?php
+    $billing = json_decode($order->billing_address, true);
+?>
+
 <div class="container py-5">
     <div class="text-center mb-5">
-     
         <h1 class="display-4 text-success mb-3">Thank You For Your Order!</h1>
         <p class="lead text-muted">Your order <strong>#<?php echo e($order->order_number); ?></strong> has been received and is being processed.</p>
-        <p class="text-muted">We've sent a confirmation to <strong><?php echo e($order->email); ?></strong></p>
     </div>
     
     <div class="row justify-content-center">
         <div class="col-lg-8">
+            <!-- Order Summary -->
             <div class="card shadow-sm border-0 mb-4">
                 <div class="card-header bg-white border-0 py-3">
                     <h5 class="mb-0 font-weight-bold">Order Summary</h5>
@@ -54,63 +58,59 @@
                         <span>Subtotal</span>
                         <span>₦<?php echo e(number_format($order->subtotal, 2)); ?></span>
                     </div>
-                    <!-- <div class="d-flex justify-content-between align-items-center py-2">
-                        <span>Shipping</span>
-                        <span>₦<?php echo e(number_format($order->shipping, 2)); ?></span>
-                    </div> -->
                     <div class="d-flex justify-content-between align-items-center pt-2 border-top">
                         <strong>Total</strong>
                         <strong>₦<?php echo e(number_format($order->total, 2)); ?></strong>
                     </div>
                 </div>
             </div>
-            
+
+            <!-- Payment Receipt -->
             <?php if($order->payment_receipt): ?>
-    <div class="card shadow-sm border-0 mb-4">
-        <div class="card-header bg-white border-0 py-3">
-            <h5 class="mb-0 font-weight-bold">Uploaded Payment Receipt</h5>
-        </div>
-        <div class="card-body text-center">
-            <?php
-                $isPdf = \Illuminate\Support\Str::endsWith($order->payment_receipt, '.pdf');
-            ?>
-
-            <?php if($isPdf): ?>
-                <a href="<?php echo e($order->payment_receipt); ?>" target="_blank" class="btn btn-outline-primary">
-                    View PDF Receipt
-                </a>
-            <?php else: ?>
-                <img src="<?php echo e($order->payment_receipt); ?>" alt="Payment Receipt"
-                     class="img-fluid border rounded" style="max-height: 400px;">
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header bg-white border-0 py-3">
+                    <h5 class="mb-0 font-weight-bold">Uploaded Payment Receipt</h5>
+                </div>
+                <div class="card-body text-center">
+                    <?php
+                        $isPdf = \Illuminate\Support\Str::endsWith($order->payment_receipt, '.pdf');
+                    ?>
+                    <?php if($isPdf): ?>
+                        <a href="<?php echo e($order->payment_receipt); ?>" target="_blank" class="btn btn-outline-primary">
+                            View PDF Receipt
+                        </a>
+                    <?php else: ?>
+                        <img src="<?php echo e($order->payment_receipt); ?>" alt="Payment Receipt"
+                             class="img-fluid border rounded" style="max-height: 400px;">
+                    <?php endif; ?>
+                </div>
+            </div>
             <?php endif; ?>
-        </div>
-    </div>
-<?php endif; ?>
 
-
-
-
-
+            <!-- Customer Information -->
             <div class="card shadow-sm border-0 mb-4">
                 <div class="card-header bg-white border-0 py-3">
                     <h5 class="mb-0 font-weight-bold">Customer Information</h5>
                 </div>
                 <div class="card-body">
                     <div class="row">
+                        <!-- Contact Information -->
                         <div class="col-md-6 mb-3">
                             <h6 class="small text-muted mb-1">Contact Information</h6>
-                            <p class="mb-0"><?php echo e($order->email); ?></p>
-                            <p class="mb-0"><?php echo e($order->phone); ?></p>
+                            <p class="mb-0"><?php echo e($billing['first_name'] ?? ''); ?> <?php echo e($billing['last_name'] ?? ''); ?></p>
+                            <p class="mb-0"><?php echo e($billing['email'] ?? ''); ?></p>
+                            <p class="mb-0"><?php echo e($billing['phone'] ?? ''); ?></p>
                         </div>
+                        <!-- Billing Address -->
                         <div class="col-md-6">
                             <h6 class="small text-muted mb-1">Billing Address</h6>
-                            <p class="mb-0"><?php echo e($order->first_name); ?> <?php echo e($order->last_name); ?></p>
-                            <p class="mb-0"><?php echo e($order->address1); ?></p>
+                            <p class="mb-0"><?php echo e($billing['email'] ?? ''); ?></p>
                         </div>
                     </div>
                 </div>
             </div>
-            
+
+            <!-- Buttons -->
             <div class="text-center py-4">
                 <a href="<?php echo e(route('shop')); ?>" class="btn btn-primary px-5 py-3">
                     <i class="fas fa-arrow-left mr-2"></i> Continue Shopping
@@ -155,4 +155,5 @@
 <?php $__env->stopPush(); ?>
 
 <?php $__env->stopSection(); ?>
+
 <?php echo $__env->make('layout.frontend', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xamppp\htdocs\selleaise\resources\views/frontend/thank-you.blade.php ENDPATH**/ ?>

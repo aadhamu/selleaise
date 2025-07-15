@@ -417,8 +417,8 @@
                 </a>
                 <p class="text-white-50 mb-4">SellEase Premium online shopping destination offering quality products with seamless shopping experience.</p>
                 <p class="mb-2"><i class="fa fa-map-marker-alt text-success mr-3"></i>Abuja,Nigeria</p>
-                <p class="mb-2"><i class="fa fa-envelope text-success mr-3"></i>olibeychimaoji@gmail.com</p>
-                <p class="mb-0"><i class="fa fa-phone-alt text-success mr-3"></i>+234 8037441520</p>
+                <p class="mb-2"><i class="fa fa-envelope text-success mr-3"></i>Lannasage@gmail.com</p>
+                <p class="mb-0"><i class="fa fa-phone-alt text-success mr-3"></i>+2348037423752</p>
             </div>
             <div class="col-lg-8 col-md-6">
                 <div class="row">
@@ -427,7 +427,7 @@
                         <ul class="list-unstyled footer-links">
                             <li><a href="/"><i class="fa fa-angle-right mr-2"></i>Home</a></li>
                             <li><a href="<?php echo e(route('shop')); ?>"><i class="fa fa-angle-right mr-2"></i>Our Shop</a></li>
-                            <li><a href="#"><i class="fa fa-angle-right mr-2"></i>Featured Products</a></li>
+                            <!-- <li><a href="#"><i class="fa fa-angle-right mr-2"></i>Featured Products</a></li> -->
                             <li><a href="<?php echo e(route('cart')); ?>"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a></li>
                             <li><a href="<?php echo e(route('contact')); ?>"><i class="fa fa-angle-right mr-2"></i>Contact Us</a></li>
                         </ul>

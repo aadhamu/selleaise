@@ -159,7 +159,7 @@
                         <div class="detail-row mb-2">
                             <span class="font-weight-bold">Account Number:</span>
                             <span>8236930152</span>
-                            <button class="btn btn-sm btn-outline-secondary copy-btn" onclick="copyToClipboard('9037441520')">
+                            <button class="btn btn-sm btn-outline-secondary copy-btn" onclick="copyToClipboard('8236930152')">
                                 <i class="fa fa-copy"></i> Copy
                             </button>
                         </div>
@@ -244,6 +244,14 @@ document.getElementById('proceedToPaymentBtn').addEventListener('click', functio
     }
 
     const reference = 'ORD-' + Math.floor((Math.random() * 1000000000) + 1);
+
+
+
+
+    const proceedBtn = document.getElementById('proceedToPaymentBtn');
+proceedBtn.disabled = true;
+proceedBtn.innerText = "Processing...";
+
 
     const handler = PaystackPop.setup({
         key: PAYSTACK_PUBLIC_KEY,

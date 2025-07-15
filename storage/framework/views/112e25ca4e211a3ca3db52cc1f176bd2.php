@@ -1,6 +1,6 @@
-@extends('layout.frontend')
 
-@section('content')
+
+<?php $__env->startSection('content'); ?>
 
     <!-- Page Header Start -->
     <div class="container-fluid bg-secondary mb-5">
@@ -24,13 +24,14 @@
       <div class="col-lg-7 mb-5">
           <div class="contact-form">
               <!-- <div id="success"></div> -->
-              @if(session('success'))
+              <?php if(session('success')): ?>
     <div class="alert alert-success mt-2" id="success">
-        {{ session('success') }}
+        <?php echo e(session('success')); ?>
+
     </div>
-@endif
-<form name="sentMessage" id="contactForm" novalidate="novalidate" method="POST" action="{{ route('contact.store') }}">
-    @csrf
+<?php endif; ?>
+<form name="sentMessage" id="contactForm" novalidate="novalidate" method="POST" action="<?php echo e(route('contact.store')); ?>">
+    <?php echo csrf_field(); ?>
     <div class="control-group">
         <input type="text" name="name" class="form-control" id="name" placeholder="Your Name"
             required="required" data-validation-required-message="Please enter your name" />
@@ -72,4 +73,5 @@ Reach out to us via email or phone — we’d love to hear from you.</p>
 </div>
 <!-- Contact End -->
 
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layout.frontend', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xamppp\htdocs\selleaise\resources\views/frontend/contact.blade.php ENDPATH**/ ?>

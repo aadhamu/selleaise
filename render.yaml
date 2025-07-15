@@ -1,66 +1,66 @@
-services:
-  - type: web
-    name: sellease
-    env: docker
-    plan: free
-    # Run npm build *before* starting the container so public/build exists
-    buildCommand: "npm install && npm run build"
-    # startCommand runs migrations then apache
-    startCommand: "php artisan migrate --force && apache2-foreground"
-    envVars:
-      - key: APP_ENV
-        value: production
-      - key: APP_KEY
-        value: base64:Hqjbc2q91dzBaQx5t/22ssrzwDSkKNiLchSUDiG3SC8=
-      - key: APP_DEBUG
-        value: "false"
-      - key: APP_URL
-        value: https://sellease.onrender.com
-      - key: VITE_URL
-        value: https://sellease.onrender.com
+# services:
+#   - type: web
+#     name: sellease
+#     env: docker
+#     plan: free
+#     # Run npm build *before* starting the container so public/build exists
+#     buildCommand: "npm install && npm run build"
+#     # startCommand runs migrations then apache
+#     startCommand: "php artisan migrate --force && apache2-foreground"
+#     envVars:
+#       - key: APP_ENV
+#         value: production
+#       - key: APP_KEY
+#         value: base64:Hqjbc2q91dzBaQx5t/22ssrzwDSkKNiLchSUDiG3SC8=
+#       - key: APP_DEBUG
+#         value: "false"
+#       - key: APP_URL
+#         value: https://sellease.onrender.com
+#       - key: VITE_URL
+#         value: https://sellease.onrender.com
 
-      - key: DB_CONNECTION
-        value: pgsql
-      - key: DB_HOST
-        value: dpg-d1hi6a0dl3ps738mtigg-a
-      - key: DB_PORT
-        value: "5432"
-      - key: DB_DATABASE
-        value: sellease_user
-      - key: DB_USERNAME
-        value: sellease
-      - key: DB_PASSWORD
-        value: hcwQhHDMLZowzJgqMYgeTHv6utdUNvdP
-
-
-      - key: PAYSTACK_PUBLIC_KEY
-        value: pk_live_d18d25bd75ff0954e4f5d5bdfabb7c67800e369e
-
-      - key: PAYSTACK_SECRET_KEY
-        value: sk_live_d8099779167fc27a10e021a2bcfdbc602b8717d0
-
-      - key: PAYSTACK_PAYMENT_URL
-        value: https://api.paystack.co
-
-      - key: MERCHANT_EMAIL
-        value: olibeychimaoji@gmail.com
+#       - key: DB_CONNECTION
+#         value: pgsql
+#       - key: DB_HOST
+#         value: dpg-d1hi6a0dl3ps738mtigg-a
+#       - key: DB_PORT
+#         value: "5432"
+#       - key: DB_DATABASE
+#         value: sellease_user
+#       - key: DB_USERNAME
+#         value: sellease
+#       - key: DB_PASSWORD
+#         value: hcwQhHDMLZowzJgqMYgeTHv6utdUNvdP
 
 
+#       - key: PAYSTACK_PUBLIC_KEY
+#         value: pk_live_d18d25bd75ff0954e4f5d5bdfabb7c67800e369e
 
+#       - key: PAYSTACK_SECRET_KEY
+#         value: sk_live_d8099779167fc27a10e021a2bcfdbc602b8717d0
 
-      - key: CLOUDINARY_URL
-        value: cloudinary://756229453334224:NK5s13vfnWAIPs0RWT99RTkg83E@dy5u95s0k
+#       - key: PAYSTACK_PAYMENT_URL
+#         value: https://api.paystack.co
+
+#       - key: MERCHANT_EMAIL
+#         value: olibeychimaoji@gmail.com
 
 
 
-      - key: LOG_CHANNEL
-        value: stderr
-      - key: CACHE_DRIVER
-        value: file
-      - key: SESSION_DRIVER
-        value: file
-      - key: QUEUE_CONNECTION
-        value: sync
+
+#       - key: CLOUDINARY_URL
+#         value: cloudinary://756229453334224:NK5s13vfnWAIPs0RWT99RTkg83E@dy5u95s0k
+
+
+
+#       - key: LOG_CHANNEL
+#         value: stderr
+#       - key: CACHE_DRIVER
+#         value: file
+#       - key: SESSION_DRIVER
+#         value: file
+#       - key: QUEUE_CONNECTION
+#         value: sync
 
 
 

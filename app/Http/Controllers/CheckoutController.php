@@ -59,7 +59,7 @@ class CheckoutController extends Controller
 
             if ($request->payment_method === 'bank_transfer') {
                 $request->validate([
-                    'payment_receipt' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
+                    'payment_receipt' => 'required|file|mimes:jpg,jpeg,png,pdf|max:10240', 
                 ]);
 
                 $receipt = $request->file('payment_receipt');
